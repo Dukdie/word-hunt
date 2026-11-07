@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Word Hunt: a reading game</title>
+<meta name="description" content="Word Hunt is a free reading game that teaches pupils aged 10 to 12 to hunt for key words in a story. Play it here.">
+<style>
+  @font-face { font-family:"Andika"; font-weight:400; font-style:normal; font-display:swap; src:url(assets/andika-400.woff2) format("woff2"); }
+  @font-face { font-family:"Andika"; font-weight:700 900; font-style:normal; font-display:swap; src:url(assets/andika-700.woff2) format("woff2"); }
+
+  :root {
+    --paper:#FFF8E7; --dot:#F3E6C4; --ink:#1D2B3A; --soft:#4A5A6C; --line:#E4D6AE;
+    --sun:#FFD43B; --sun-soft:#FFF0A8; --coral:#FF6B57; --coral-deep:#F25A45; --violet-soft:#EEE9FF; --card:#FFFFFF;
+    --sp1:.25rem; --sp2:.5rem; --sp3:.75rem; --sp4:1rem; --sp5:1.5rem; --sp6:2.5rem; --sp7:4rem; --sp8:6rem;
+    --shell:70rem; --radius:18px;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; scroll-padding-top:5rem; scrollbar-color:var(--ink) var(--paper); }
+  body { margin:0; color:var(--ink); background:var(--paper) radial-gradient(var(--dot) 1.4px, transparent 1.4px) 0 0/24px 24px; font:400 1.125rem/1.65 "Andika","Century Gothic",Verdana,sans-serif; -webkit-font-smoothing:antialiased; }
+  ::selection { background:var(--sun); color:var(--ink); }
+  a { color:inherit; text-underline-offset:.2em; text-decoration-thickness:2px; }
+  :focus-visible { outline:3px solid var(--ink); outline-offset:3px; border-radius:6px; }
+  .shell { max-width:var(--shell); margin:0 auto; padding:0 var(--sp5); }
+
+  .skip { position:absolute; left:-999px; top:0; background:var(--sun); padding:var(--sp3) var(--sp4); z-index:30; font-weight:700; }
+  .skip:focus { left:var(--sp4); top:var(--sp4); }
+
+  /* top bar: quiet, so the headline leads */
+  header.top { position:sticky; top:0; z-index:20; background:rgba(255,248,231,.94); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); }
+  .bar { display:flex; align-items:center; justify-content:space-between; gap:var(--sp4); flex-wrap:wrap; padding-block:var(--sp3); }
+  .brand { display:inline-flex; align-items:center; gap:var(--sp2); font-weight:800; font-size:1.2rem; text-decoration:none; }
+  .brand b { color:var(--coral-deep); }
+  .logo { width:2.1rem; height:2.1rem; border-radius:10px; background:var(--sun); border:2.5px solid var(--ink); display:grid; place-items:center; }
+  nav ul { display:flex; gap:var(--sp5); list-style:none; margin:0; padding:0; flex-wrap:wrap; }
+  nav a { font-size:.95rem; font-weight:700; color:var(--soft); text-decoration:none; padding-block:var(--sp1); border-bottom:2px solid transparent; }
+  nav a:hover { color:var(--ink); border-bottom-color:var(--sun); }
+
+  /* hero: one huge headline, one lead, one button */
+  .hero { padding-block:clamp(3.5rem,9vw,7rem) clamp(3rem,6vw,5rem); }
+  h1 { margin:0; font-size:clamp(3.2rem,10.5vw,6rem); line-height:1; letter-spacing:-.025em; font-weight:800; max-width:14ch; text-wrap:balance; }
+  .mark { background:linear-gradient(transparent 62%, var(--sun) 62%) no-repeat 0 0/0% 100%; animation:swipe .9s .25s cubic-bezier(.16,1,.3,1) forwards; padding-inline:.06em; margin-inline:-.06em; }
+  @keyframes swipe { to { background-size:100% 100%; } }
+  .lead { margin:var(--sp6) 0 0; max-width:34rem; font-size:clamp(1.2rem,2.4vw,1.45rem); line-height:1.5; color:var(--ink); }
+  .cta { display:flex; align-items:center; gap:var(--sp5) var(--sp6); flex-wrap:wrap; margin-top:var(--sp6); }
+  .btn { display:inline-flex; align-items:center; justify-content:center; min-height:3.6rem; padding:0 var(--sp6); border-radius:14px; background:var(--coral); color:var(--ink); border:3px solid var(--ink); font:800 1.2rem/1 "Andika",sans-serif; text-decoration:none; box-shadow:0 4px 0 var(--ink); transition:transform .15s, box-shadow .15s; }
+  .btn:hover { transform:translateY(2px); box-shadow:0 2px 0 var(--ink); }
+  .btn:active { transform:translateY(4px); box-shadow:0 0 0 var(--ink); }
+  .link { font-weight:700; font-size:1.05rem; }
+  .meta { margin:var(--sp5) 0 0; font-size:.95rem; color:var(--soft); }
+
+  section.block { padding-top:clamp(3.5rem,8vw,6rem); }
+  h2 { margin:0 0 var(--sp3); font-size:clamp(1.9rem,4.5vw,2.75rem); line-height:1.1; letter-spacing:-.015em; font-weight:800; text-wrap:balance; }
+  .intro { margin:0 0 var(--sp6); max-width:38rem; color:var(--soft); }
+
+  /* the game */
+  .frame { background:var(--card); border:3px solid var(--ink); border-radius:var(--radius); overflow:hidden; box-shadow:0 18px 40px -18px rgba(29,43,58,.35); }
+  .frame iframe { display:block; width:100%; height:min(78vh,44rem); min-height:32rem; border:0; background:var(--paper); }
+  .frame-links { display:flex; gap:var(--sp3) var(--sp5); flex-wrap:wrap; margin-top:var(--sp4); font-size:.95rem; font-weight:700; }
+
+  /* how it works: three plain columns, no boxes */
+  .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp6); list-style:none; margin:0; padding:0; }
+  .steps li { border-top:3px solid var(--ink); padding-top:var(--sp4); }
+  .steps .n { display:block; font-size:2.6rem; font-weight:800; line-height:1; color:var(--coral-deep); margin-bottom:var(--sp3); }
+  .steps h3 { margin:0 0 var(--sp2); font-size:1.3rem; line-height:1.2; }
+  .steps p { margin:0; color:var(--soft); font-size:1.05rem; }
+
+  /* teachers */
+  .teach { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp7); align-items:start; }
+  .teach p { margin:0 0 var(--sp4); max-width:32rem; }
+  .dl { list-style:none; margin:0; padding:0; border-top:1px solid var(--line); }
+  .dl li { border-bottom:1px solid var(--line); }
+  .dl a { display:flex; justify-content:space-between; align-items:baseline; gap:var(--sp4); padding:var(--sp4) 0; text-decoration:none; font-weight:700; }
+  .dl a span { font-weight:400; color:var(--soft); font-size:.95rem; white-space:nowrap; }
+  .dl a:hover { color:var(--coral-deep); }
+  .dl a:hover span { color:inherit; text-decoration:underline; }
+
+  .guide object { display:block; width:100%; height:min(78vh,44rem); min-height:30rem; border:3px solid var(--ink); border-radius:var(--radius); background:var(--card); }
+
+  .ph { border:2px dashed var(--ink); border-radius:var(--radius); background:var(--violet-soft); padding:var(--sp5); }
+  .ph small { display:inline-block; font-size:.75rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; background:var(--ink); color:var(--paper); padding:.15rem .6rem; border-radius:999px; margin-bottom:var(--sp3); }
+  .ph p { margin:0; font-size:1rem; color:var(--ink); }
+  .ph p + p { margin-top:var(--sp3); }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp5); }
+  .form-embed iframe { display:block; width:100%; height:42rem; border:3px solid var(--ink); border-radius:var(--radius); background:var(--card); }
+
+  footer { margin-top:clamp(4rem,8vw,6rem); background:var(--ink); color:var(--paper); }
+  footer .shell { padding-block:var(--sp5); display:flex; justify-content:space-between; gap:var(--sp4); flex-wrap:wrap; font-size:.95rem; }
+  footer a { color:var(--sun); }
+
+  @media (max-width:860px) {
+    .steps, .teach, .two { grid-template-columns:1fr; gap:var(--sp6); }
+    .teach { gap:var(--sp5); }
+  }
+  @media (max-width:560px) {
+    .shell { padding:0 var(--sp4); }
+    nav ul { gap:var(--sp4); }
+    .frame iframe { height:80vh; min-height:30rem; }
+    .btn { width:100%; }
+    .cta { gap:var(--sp4); }
+  }
+  @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .mark { animation:none; background-size:100% 100%; } .btn { transition:none; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the content</a>
+
+<header class="top">
+  <div class="shell bar">
+    <a class="brand" href="#top"><span class="logo" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D2B3A" stroke-width="3" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5.5 5.5"/></svg></span>Word <b>Hunt</b></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#play">Play</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#teachers">Teachers</a></li>
+        <li><a href="#guide">User guide</a></li>
+        <li><a href="#feedback">Feedback</a></li>
+        <li><a href="#thanks">Thanks</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero shell" id="top">
+    <h1>Hunt for the <span class="mark">key word.</span></h1>
+    <p class="lead">Word Hunt is a free reading game for pupils aged 10 to 12. Read the question, search the story, choose the answer.</p>
+    <div class="cta">
+      <a class="btn" href="#play">Play the game</a>
+      <a class="link" href="#guide">Read the user guide</a>
+    </div>
+    <p class="meta">Three levels. Works on phones and laptops. Nothing to install.</p>
+  </section>
+
+  <section class="block shell" id="play" aria-labelledby="play-h">
+    <h2 id="play-h">Try it now</h2>
+    <p class="intro">Type a nickname, press Start, then choose Easy. The story is "A Day at Sea".</p>
+    <div class="frame">
+      <iframe src="app/play-quick.html" title="Word Hunt game" allow="autoplay"></iframe>
+    </div>
+    <p class="frame-links"><a href="app/play-quick.html">Open the game full screen</a> <a href="app/play-all.html">Play all three stories</a></p>
+  </section>
+
+  <section class="block shell" id="how" aria-labelledby="how-h">
+    <h2 id="how-h">How it works</h2>
+    <p class="intro">Three steps for every question.</p>
+    <ol class="steps">
+      <li><span class="n">1</span><h3>Pick a key word</h3><p>Read the question. Choose one name or thing, such as "hat" or "Zara".</p></li>
+      <li><span class="n">2</span><h3>Search for it</h3><p>Matching words turn yellow in the story. Read the sentences around them.</p></li>
+      <li><span class="n">3</span><h3>Choose the answer</h3><p>Pupils get 3 tries. A wrong answer gets a short reason, so the next try is smarter.</p></li>
+    </ol>
+  </section>
+
+  <section class="block shell" id="teachers" aria-labelledby="t-h">
+    <div class="teach">
+      <div>
+        <h2 id="t-h">For teachers</h2>
+        <p>Use your own stories. Make one with the game's prompt in any AI chat, then paste the reply or drop the story file on the start page. The game checks it for you.</p>
+        <p>The Teacher panel shows every pair's results and the most common mistakes in the class.</p>
+      </div>
+      <ul class="dl">
+        <li><a href="app/Wordhunt.html" download>The game <span>Wordhunt.html</span></a></li>
+        <li><a href="stories/Wildlife_story_1_A_Day_at_Sea.json" download>Story 1: A Day at Sea <span>Download</span></a></li>
+        <li><a href="stories/Wildlife_story_2_Safari_Park_Visit.json" download>Story 2: Safari Park Visit <span>Download</span></a></li>
+        <li><a href="stories/Wildlife_story_3_Small_and_Strong.json" download>Story 3: Small and Strong <span>Download</span></a></li>
+        <li><a href="stories/Wild_life_stories.json" download>All three stories <span>Download</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block shell guide" id="guide" aria-labelledby="g-h">
+    <h2 id="g-h">User guide</h2>
+    <p class="intro">Step by step, for teachers and pupils.</p>
+    <object data="guide/Word-Hunt-User-Guide.pdf" type="application/pdf" aria-label="Word Hunt user guide">
+      <div class="ph"><small>Placeholder</small><p>The user guide will appear here.</p><p><a href="guide/Word-Hunt-User-Guide.pdf">Open the user guide in a new page</a></p></div>
+    </object>
+  </section>
+
+  <section class="block shell" id="feedback" aria-labelledby="f-h">
+    <h2 id="f-h">Feedback from user testing</h2>
+    <p class="intro">What testers told us, and what we changed.</p>
+    <div class="two">
+      <div class="ph"><small>Placeholder</small><p>Summary of the feedback. Three short parts: what worked, what was hard, what we changed.</p></div>
+      <div class="ph" id="form-box"><small>Placeholder</small><p>The feedback form will be placed here.</p></div>
+    </div>
+  </section>
+
+  <section class="block shell" id="thanks" aria-labelledby="a-h">
+    <h2 id="a-h">Acknowledgements</h2>
+    <div class="ph"><small>Placeholder</small><p>Add the thank-you notes here: supervisors, lecturers, schools and pupils who helped.</p><p>Credits: the Andika typeface is by SIL International, used under the SIL Open Font License.</p></div>
+  </section>
+</main>
+
+<footer><div class="shell"><span>Word Hunt</span><span>Innovation exhibition</span></div></footer>
+
+<script>
+  // To show the Google Form: paste its embed link between the quotes. Leave it empty to keep the placeholder.
+  var FORM_URL = "";
+  if (FORM_URL) {
+    var box = document.getElementById("form-box");
+    box.className = "form-embed"; box.innerHTML = '<iframe src="' + FORM_URL + '" title="Feedback form">Loading</iframe>';
+  }
+</script>
+</body>
+</html>
