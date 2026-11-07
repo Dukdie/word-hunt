@@ -184,7 +184,7 @@
   .vq figcaption { display:flex; align-items:center; gap:var(--s2); margin-top:var(--s4); font-size:var(--t-lead); }
   .vq figcaption::before { content:""; width:3rem; height:.3rem; background:var(--sun); flex:none; }
   .vq figcaption strong { color:var(--sun); font-weight:800; }
-  .teacher { display:block; width:100%; max-width:22rem; justify-self:center; margin-bottom:calc(var(--sec) * -1 + 1px); }
+  .teacher { display:block; width:100%; max-width:19rem; justify-self:center; margin-bottom:calc(var(--sec) * -1 + 1px); }
   .js .lw { opacity:.3; transition:opacity .3s; }
   .js .lw.on { opacity:1; }
   .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
@@ -520,26 +520,35 @@
           </blockquote>
           <figcaption><strong>Adib Nifail</strong> Teacher, SJKC La Salle</figcaption>
         </div>
-        <svg class="teacher" viewBox="0 0 300 380" role="img" aria-label="A teacher whose head is the Word Hunt lens icon" data-ui>
-  <defs><clipPath id="tb"><path d="M22 380C22 320 40 262 98 238Q150 214 202 238C260 262 278 320 278 380Z"/></clipPath></defs>
-  <g clip-path="url(#tb)">
-    <rect x="0" y="200" width="300" height="180" fill="#FF6B57"/>
-    <path d="M150 200H300V380H150Z" fill="#D9503E" opacity=".55"/>
-    <path d="M70 260C58 300 60 340 64 380" fill="none" stroke="#D9503E" stroke-width="5" stroke-linecap="round"/>
-    <path d="M230 260C242 300 240 340 236 380" fill="none" stroke="#B8402F" stroke-width="5" stroke-linecap="round"/>
-    <rect x="0" y="332" width="300" height="24" fill="#0E1722"/>
+        <svg class="teacher" viewBox="0 0 330 430" role="img" aria-label="A teacher whose head is the Word Hunt lens icon" data-ui>
+  <!-- the handle of the lens sits behind the shoulder -->
+  <path d="M206 140L246 188" stroke="#FFD43B" stroke-width="18" stroke-linecap="round" fill="none"/>
+  <!-- legs -->
+  <path d="M92 342H160L152 430H86Z" fill="#F3E9C9"/><path d="M168 342H236L244 430H176Z" fill="#E4D6AA"/>
+  <path d="M120 360L112 430" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity=".5"/>
+  <!-- neck, joined to the head and the shoulders -->
+  <path d="M143 150H177V214Q160 226 143 214Z" fill="#D9503E"/>
+  <!-- torso -->
+  <path d="M98 226C98 208 120 200 143 198H177C200 200 222 208 222 226L232 338H88Z" fill="#FF6B57"/>
+  <path d="M160 202H177C200 202 222 210 222 226L232 338H160Z" fill="#E85D49"/>
+  <path d="M138 202L160 232L182 202" fill="none" stroke="#FFF8E7" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M112 236C108 270 108 300 110 326" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" fill="none" opacity=".35"/>
+  <g transform="rotate(-5 196 270)"><rect x="180" y="258" width="38" height="24" rx="6" fill="#FFF8E7"/><rect x="186" y="265" width="18" height="4" rx="2" fill="#1D2B3A"/><rect x="186" y="273" width="26" height="3" rx="1.5" fill="#1D2B3A" opacity=".35"/></g>
+  <!-- belt -->
+  <path d="M88 322H232V344H88Z" fill="#0E1722"/>
+  <rect x="146" y="318" width="28" height="30" rx="7" fill="#FFD43B" stroke="#1D2B3A" stroke-width="4"/><rect x="156" y="329" width="8" height="10" rx="2" fill="#1D2B3A"/>
+  <!-- relaxed arms: one hanging, one raised in a loose hello -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32">
+    <path d="M106 234C90 262 82 290 86 312C88 324 94 332 100 338" stroke="#FF6B57"/>
+    <path d="M214 234C246 252 266 282 268 300C276 282 288 266 296 250" stroke="#E85D49"/>
   </g>
-  <rect x="134" y="326" width="32" height="36" rx="8" fill="#FFD43B" stroke="#1D2B3A" stroke-width="4"/>
-  <rect x="145" y="338" width="10" height="12" rx="3" fill="#1D2B3A"/>
-  <rect x="86" y="262" width="62" height="38" rx="9" fill="#FFF8E7" transform="rotate(-6 117 281)"/>
-  <rect x="97" y="274" width="30" height="5" rx="2.5" fill="#1D2B3A" transform="rotate(-6 117 281)"/>
-  <rect x="97" y="285" width="40" height="4" rx="2" fill="#1D2B3A" opacity=".35" transform="rotate(-6 117 281)"/>
-  <path d="M118 214Q150 244 182 214Q168 206 150 206Q132 206 118 214Z" fill="#FFF8E7"/>
+  <path d="M96 252C90 276 88 296 90 312" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" fill="none" opacity=".35"/>
+  <circle cx="102" cy="346" r="19" fill="#FF6B57"/>
+  <circle cx="298" cy="240" r="19" fill="#E85D49"/>
   <!-- the head is the lens itself -->
-  <circle cx="150" cy="118" r="74" fill="#FFF0A8"/>
-  <path d="M104 92A52 52 0 0 1 140 66" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" opacity=".8"/>
-  <path d="M206 168L254 216" stroke="#FFD43B" stroke-width="22" stroke-linecap="round" fill="none"/>
-  <circle cx="150" cy="118" r="74" fill="none" stroke="#FFD43B" stroke-width="22"/>
+  <circle cx="160" cy="98" r="64" fill="#FFF0A8"/>
+  <path d="M116 78A46 46 0 0 1 146 52" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" opacity=".85"/>
+  <circle cx="160" cy="98" r="64" fill="none" stroke="#FFD43B" stroke-width="20"/>
 </svg>
       </figure>
     </div>
