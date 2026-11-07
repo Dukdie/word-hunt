@@ -33,7 +33,7 @@
   /* ---- navigation ---- */
   .top { position:sticky; top:0; z-index:20; background:var(--ground); }
   .top .wrap { display:flex; justify-content:space-between; align-items:center; gap:var(--s2); min-height:4rem; }
-  .brand { font-weight:800; font-size:var(--t-lead); text-decoration:none; letter-spacing:-.02em; }
+  .brand { font-weight:800; font-size:var(--t-lead); text-decoration:none; letter-spacing:-.02em; white-space:nowrap; }
   .top nav { display:flex; gap:var(--s3); flex-wrap:wrap; justify-content:flex-end; }
   .top nav a { position:relative; z-index:0; font-size:var(--t-small); font-weight:700; text-decoration:none; padding:.25rem 0; }
   .top nav a::after { content:""; position:absolute; left:0; right:0; bottom:.1rem; height:.4rem; background:var(--sun); z-index:-1; transform:scaleX(0); transform-origin:0 50%; transition:transform .35s var(--ease); }
@@ -126,7 +126,8 @@
   .gtab[aria-selected="true"] { background:var(--ink); color:var(--on-dark); }
   .gtab[aria-selected="false"]:hover { background:var(--sun); }
   .gpanel[hidden] { display:none; }
-  .gbar { display:flex; justify-content:space-between; align-items:center; gap:var(--s2); flex-wrap:wrap; margin-bottom:var(--s2); }
+  .gbar { display:none; justify-content:space-between; align-items:center; gap:var(--s2); flex-wrap:wrap; margin-bottom:var(--s2); }
+  .gpanel.has-pdf .gbar { display:flex; }
   .gbar p { font-size:var(--t-lead); font-weight:800; }
   .gbtns { display:flex; gap:var(--s1); flex-wrap:wrap; }
   .btn.alt { background:var(--ground); }
@@ -135,13 +136,45 @@
   .gpanel.has-pdf object { display:block; height:min(82vh,48rem); min-height:30rem; }
   .gpanel .ph { background:var(--ground); }
   .gpanel.has-pdf .ph { display:none; }
+  .fb-top { display:grid; grid-template-columns:7fr 5fr; gap:var(--s4); align-items:stretch; }
+  .quote { margin:0; background:var(--sun); padding:var(--s4); display:flex; flex-direction:column; justify-content:space-between; gap:var(--s3); }
+  .quote blockquote { margin:0; font-size:var(--t-lead); line-height:1.5; }
+  .quote blockquote strong { font-weight:800; }
+  .quote figcaption { font-size:var(--t-lead); }
+  .snap { margin:0; background:var(--note); min-height:16rem; }
+  .snap img { width:100%; height:100%; object-fit:cover; display:block; }
+  .snap-ph { padding:var(--s3); }
+  .snap-ph b { display:block; margin-bottom:var(--s1); }
+  .fb-results, .fb-analysis { margin-top:var(--sec); }
+  .fb-results h3, .fb-analysis h3 { font-size:var(--t-h3); line-height:1.05; letter-spacing:-.03em; font-weight:800; }
+  .fb-note { margin:var(--s1) 0 var(--s3); }
+  .tbl { overflow-x:auto; background:var(--note); }
+  .tbl table { width:100%; border-collapse:collapse; min-width:42rem; }
+  .tbl th, .tbl td { text-align:left; padding:var(--s2) var(--s3); font-size:var(--t-body); font-weight:400; white-space:nowrap; }
+  .tbl th { background:var(--ink); color:var(--on-dark); font-weight:700; }
+  .tbl tbody tr:nth-child(even) td { background:var(--ground); }
+  .tbl td:first-child { font-weight:700; }
+  .ana { display:grid; grid-template-columns:5fr 7fr; gap:var(--s4); margin-top:var(--s3); align-items:start; }
+  .stats { display:grid; grid-template-columns:1fr 1fr; gap:var(--s1); }
+  .stat { background:var(--sun); padding:var(--s3); }
+  .stat b { display:block; font-size:var(--t-h3); line-height:1; letter-spacing:-.03em; font-weight:800; }
+  .stat span { display:block; margin-top:var(--s1); }
+  .slips { background:var(--note); padding:var(--s3); }
+  .slips p.t { font-size:var(--t-lead); font-weight:800; margin-bottom:var(--s2); }
+  .slip { display:grid; grid-template-columns:1fr 3fr 4.5rem; gap:var(--s2); align-items:center; margin-top:var(--s2); }
+  .slip .bar { height:1.1rem; background:var(--ground); }
+  .slip .bar i { display:block; height:100%; background:var(--coral); width:0; transition:width 1s var(--ease); }
+  .slip .n { text-align:right; font-weight:700; }
+  .fb-form { margin-top:var(--sec); }
   .two { display:grid; grid-template-columns:1fr 1fr; gap:var(--s2); }
   .form-embed iframe { display:block; width:100%; height:42rem; border:0; background:var(--ground); }
 
   /* ---- close ---- */
   .close { background:var(--dark); color:var(--on-dark); padding-block:var(--sec) var(--s4); }
   .close .notes { display:grid; grid-template-columns:7fr 5fr; gap:var(--s4); align-items:start; margin-bottom:var(--s5); }
-  .close .ph { background:rgba(255,248,231,.1); color:var(--on-dark); }
+  .close .thanks h2 { font-size:var(--t-h2); line-height:1.02; letter-spacing:-.035em; font-weight:800; margin-bottom:var(--s3); }
+  .close .thanks p { font-size:var(--t-lead); line-height:1.5; max-width:34rem; }
+  .close .thanks .credit { font-size:var(--t-small); margin-top:var(--s3); }
   .close .back { justify-self:end; font-weight:700; }
   .close .big { display:block; font-size:var(--t-h1); line-height:1; letter-spacing:-.04em; font-weight:800; text-decoration:none; color:var(--on-dark); transition:color .25s; }
   .close .big:hover { color:var(--sun); }
@@ -151,7 +184,9 @@
     .hero .wrap { grid-template-columns:1fr; }
     h1, .hero-side { grid-column:1; }
     .slot { width:1.8em; }
-    .head, .how, .teach, .two, .gtabs, .close .notes { grid-template-columns:1fr; }
+    .head, .how, .teach, .two, .gtabs, .fb-top, .ana, .close .notes { grid-template-columns:1fr; }
+    .slip { grid-template-columns:1fr 4.5rem; }
+    .slip .bar { grid-column:1 / -1; grid-row:2; }
     .head { align-items:start; }
     .close .back { justify-self:start; }
   }
@@ -288,12 +323,12 @@
       <div class="gpanel" id="gp0" role="tabpanel" aria-labelledby="gt0" data-pdf="guide/Word-Hunt-Teacher-Guide.pdf">
         <div class="gbar"><p>Teacher guide</p><div class="gbtns"><a class="btn" href="guide/Word-Hunt-Teacher-Guide.pdf" target="_blank" rel="noopener">Open the guide</a><a class="btn alt" href="guide/Word-Hunt-Teacher-Guide.pdf" download>Download PDF</a></div></div>
         <object data="guide/Word-Hunt-Teacher-Guide.pdf" type="application/pdf" aria-label="Teacher guide"></object>
-        <div class="ph"><b>Placeholder</b><p>The teacher guide will appear here.</p></div>
+        <div class="ph"><b>Coming soon</b><p>The teacher guide will be added here. You will be able to read it on this page or download it.</p></div>
       </div>
       <div class="gpanel" id="gp1" role="tabpanel" aria-labelledby="gt1" data-pdf="guide/Word-Hunt-Student-Guide.pdf" hidden>
         <div class="gbar"><p>Student guide</p><div class="gbtns"><a class="btn" href="guide/Word-Hunt-Student-Guide.pdf" target="_blank" rel="noopener">Open the guide</a><a class="btn alt" href="guide/Word-Hunt-Student-Guide.pdf" download>Download PDF</a></div></div>
         <object data="guide/Word-Hunt-Student-Guide.pdf" type="application/pdf" aria-label="Student guide"></object>
-        <div class="ph"><b>Placeholder</b><p>The student guide will appear here.</p></div>
+        <div class="ph"><b>Coming soon</b><p>The student guide will be added here. You will be able to read it on this page or download it.</p></div>
       </div>
     </div>
   </section>
@@ -302,12 +337,30 @@
     <div class="wrap">
       <div class="head">
         <h2 id="f-h" class="reveal">What testers said.</h2>
-        <p class="intro reveal" style="--d:80ms">What worked, what was hard, and what we changed.</p>
+        <p class="intro reveal" style="--d:80ms">We tested Word Hunt with a real class. Here is what they said and how they did.</p>
       </div>
-      <div class="two">
-        <div class="ph reveal"><b>Placeholder</b><p>Summary of the feedback from user testing.</p></div>
-        <div class="ph reveal" id="form-box" style="--d:100ms"><b>Placeholder</b><p>The feedback form will be placed here.</p></div>
+      <div class="fb-top">
+        <figure class="quote reveal" id="quote">
+          <blockquote><strong>My students love it.</strong> I also like the colour design of yellow and cream; it looks neat. I think it is easy to use because it also has a feature where I can generate stories, so I don't need to spend time creating them. The questions that come with the stories are also good and have good distractors.</blockquote>
+          <figcaption><strong>Adib Nifail</strong>, SJKC La Salle</figcaption>
+        </figure>
+        <figure class="snap reveal" id="snap" style="--d:100ms">
+          <div class="snap-ph"><b>Placeholder</b><p>A photo from the testing day will be placed here.</p></div>
+        </figure>
       </div>
+
+      <div class="fb-results reveal" id="fb-results">
+        <h3>Class results</h3>
+        <p class="fb-note">Names are shortened to the first three letters.</p>
+        <div id="res-box"><div class="ph"><b>Coming soon</b><p>The class results will appear here.</p></div></div>
+      </div>
+
+      <div class="fb-analysis reveal" id="fb-analysis">
+        <h3>How the class did</h3>
+        <div id="ana-box"><div class="ph"><b>Coming soon</b><p>The analysis will appear here.</p></div></div>
+      </div>
+
+      <div class="fb-form reveal" id="form-box"><div class="ph"><b>Placeholder</b><p>The feedback form will be placed here.</p></div></div>
     </div>
   </section>
 </main>
@@ -315,7 +368,11 @@
 <footer class="close" id="thanks">
   <div class="wrap">
     <div class="notes">
-      <div class="ph"><b>Acknowledgements and attribution</b><p>Placeholder: add the thank-you notes here, for supervisors, lecturers, schools and pupils who helped.</p><p>Credits: the Andika typeface is by SIL International, used under the SIL Open Font License.</p></div>
+      <div class="thanks">
+        <h2>Thank you.</h2>
+        <p>Thank you to Mr. Adib Nifail, SJKC La Salle, and the pupils from 5L for taking part in the testing of Word Hunt. Your time and your honest answers helped us make the game better.</p>
+        <p class="credit">The Andika typeface is by SIL International, used under the SIL Open Font License.</p>
+      </div>
       <a class="back" href="#top">Back to the top</a>
     </div>
     <a class="big" href="#play">Play Word Hunt</a>
@@ -339,6 +396,68 @@
     t.addEventListener("keydown", function (e) { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { var n = (k + 1) % 2; gtabs[n].click(); gtabs[n].focus(); } });
   });
   gpanels.forEach(function (p) { if (window.fetch) fetch(p.getAttribute("data-pdf"), { method: "HEAD" }).then(function (r) { if (r.ok) p.classList.add("has-pdf"); }).catch(function () {}); });
+
+  // feedback: a photo and the class results appear when their files are in the "feedback" folder
+  var snap = document.getElementById("snap");
+  var probe = new Image(); probe.onload = function () { snap.innerHTML = ""; probe.alt = "The class testing Word Hunt"; snap.appendChild(probe); }; probe.src = "feedback/testing-day.jpg";
+
+  function parseCSV(t) {
+    t = t.replace(/^\uFEFF/, ""); var rows = [], row = [], cell = "", q = false;
+    for (var i = 0; i < t.length; i++) {
+      var c = t[i];
+      if (q) { if (c === '"') { if (t[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c; }
+      else if (c === '"') q = true;
+      else if (c === ",") { row.push(cell); cell = ""; }
+      else if (c === "\n" || c === "\r") { if (c === "\r" && t[i + 1] === "\n") i++; row.push(cell); rows.push(row); row = []; cell = ""; }
+      else cell += c;
+    }
+    if (cell || row.length) { row.push(cell); rows.push(row); }
+    var head = rows.shift() || []; return rows.filter(function (r) { return r.length > 1; }).map(function (r) { var o = {}; head.forEach(function (h, k) { o[h] = r[k]; }); return o; });
+  }
+  function short(name) { name = (name || "").trim(); return name.slice(0, 3) + "\u2022\u2022\u2022"; }
+  function esc2(x) { return String(x == null ? "" : x).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function load(url) { return fetch(url).then(function (r) { if (!r.ok) throw 0; return r.text(); }).then(parseCSV); }
+
+  load("feedback/results.csv").then(function (rows) {
+    if (!rows.length) return;
+    var h = "<div class=\"tbl\"><table><thead><tr><th>Pupil</th><th>Story</th><th>Right answers</th><th>Seconds</th><th>Searches</th><th>Marks</th></tr></thead><tbody>";
+    rows.forEach(function (r) {
+      h += "<tr><td>" + esc2(short(r["Pupil"])) + "</td><td>" + esc2(r["Story"]) + "</td><td>" + esc2(r["Right answers"]) + " of " + esc2(r["Questions"]) + "</td><td>" + esc2(r["Seconds"]) + "</td><td>" + esc2(r["Searches"]) + "</td><td>" + esc2(r["Marks"]) + " of " + esc2(r["Out of"]) + "</td></tr>";
+    });
+    document.getElementById("res-box").innerHTML = h + "</tbody></table></div>";
+  }).catch(function () {});
+
+  load("feedback/answers.csv").then(function (rows) {
+    if (!rows.length) return;
+    var n = rows.length, num = function (v) { return parseFloat(v) || 0; };
+    var first = rows.filter(function (r) { return num(r["Marks"]) > 0 && num(r["Tries"]) === 1; }).length;
+    var right = rows.filter(function (r) { return num(r["Marks"]) > 0; }).length;
+    var missed = n - right;
+    var withMistake = rows.filter(function (r) { return (r["Wrong answers"] || "").trim() !== ""; });
+    var clean = rows.filter(function (r) { return (r["Wrong answers"] || "").trim() === ""; });
+    var avg = function (a) { return a.length ? Math.round(a.reduce(function (t, r) { return t + num(r["Seconds in total"]); }, 0) / a.length) : 0; };
+    var pct = function (x) { return Math.round(100 * x / n) + "%"; };
+    var trap = function (k) { return rows.filter(function (r) { return (r["Traps fallen for"] || "").indexOf(k) > -1; }).length; };
+    var slips = [
+      ["Answered without hunting", rows.filter(function (r) { return r["Keyword searched"] === "none"; }).length],
+      ["Searched a very common word", rows.filter(function (r) { return r["Keyword searched"] === "weak"; }).length],
+      ["Chose a detail about someone else", trap("distractor")],
+      ["Lost track of he or she", trap("pronoun")],
+      ["Missed a not or no", trap("negation")]
+    ];
+    var h = "<div class=\"ana\"><div class=\"stats\">" +
+      "<div class=\"stat\"><b>" + pct(first) + "</b><span>right on the first try</span></div>" +
+      "<div class=\"stat\"><b>" + pct(right) + "</b><span>right in the end</span></div>" +
+      "<div class=\"stat\"><b>" + pct(missed) + "</b><span>not right after 3 tries</span></div>" +
+      "<div class=\"stat\"><b>" + avg(rows) + " s</b><span>average time for a question</span></div>" +
+      "<div class=\"stat\"><b>" + avg(withMistake) + " s</b><span>when the pupil made a mistake</span></div>" +
+      "<div class=\"stat\"><b>" + avg(clean) + " s</b><span>with no mistake</span></div></div>" +
+      "<div class=\"slips\"><p class=\"t\">Where pupils slipped</p>";
+    slips.forEach(function (s) { h += "<div class=\"slip\"><span>" + s[0] + "</span><div class=\"bar\"><i data-w=\"" + Math.round(100 * s[1] / n) + "\"></i></div><span class=\"n\">" + s[1] + " of " + n + "</span></div>"; });
+    h += "</div></div>";
+    var box = document.getElementById("ana-box"); box.innerHTML = h;
+    setTimeout(function () { box.querySelectorAll(".bar i").forEach(function (i) { i.style.width = Math.max(+i.getAttribute("data-w"), 1) + "%"; }); }, 150);
+  }).catch(function () {});
 
   // entrances: each part rises in once as it arrives
   var els = document.querySelectorAll(".reveal");

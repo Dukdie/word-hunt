@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "buried-raster",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-07T14:40:49.421Z",
+        "reason": "Sanctioned: the three step screenshots sit at opacity 0 until their step button is pressed, then fade to 1 (agent decision, verified in the page script)."
+      }
+    ]
+  }
+}
