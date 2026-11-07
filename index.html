@@ -144,7 +144,11 @@
   .quote figcaption { margin-top:var(--s3); font-size:var(--t-lead); }
   .fb-results, .fb-analysis { margin-top:var(--sec); }
   .fb-results h3, .fb-analysis h3 { font-size:var(--t-h3); line-height:1.05; letter-spacing:-.03em; font-weight:800; }
-  .fb-note { margin:var(--s1) 0 var(--s3); }
+  .fb-note { margin:var(--s1) 0 var(--s3); max-width:46rem; }
+  .legend { display:grid; grid-template-columns:repeat(2,1fr); gap:var(--s1); margin:0 0 var(--s3); }
+  .legend div { background:var(--note); padding:var(--s2) var(--s3); }
+  .legend dt { font-weight:800; }
+  .legend dd { margin:0; }
   .tbl { background:var(--note); }
   .tbl-more { margin-top:var(--s2); }
   .tbl table { width:100%; border-collapse:collapse; }
@@ -193,6 +197,7 @@
     .slot { width:1.8em; }
     .head, .how, .teach, .two, .gtabs, .fb-cta, .ana, .close .notes { grid-template-columns:1fr; }
     .fb-form { grid-template-columns:1fr; }
+    .legend { grid-template-columns:1fr; }
     .slip { grid-template-columns:1fr 6rem; }
     .slip .bar { grid-column:1 / -1; grid-row:2; }
     .head { align-items:start; }
@@ -359,7 +364,14 @@
 
       <div class="fb-results reveal" id="fb-results">
         <h3>We tried Word Hunt with a class. Here are the results of our run.</h3>
-        <p class="fb-note">For privacy, names are shortened to the first three letters.</p>
+        <p class="fb-note">Every row is one pair playing one story. Names are shortened to the first three letters, for privacy.</p>
+        <dl class="legend">
+          <div><dt>Right answers</dt><dd>how many of the 5 questions the pair got right</dd></div>
+          <div><dt>Seconds</dt><dd>how long the pair took to finish the story</dd></div>
+          <div><dt>Searches</dt><dd>how many times the pair searched for a word</dd></div>
+          <div><dt>Marks</dt><dd>points earned: 3 for a right answer on the first try, fewer for each extra try</dd></div>
+        </dl>
+        <p class="fb-note">A teacher reads it like this: low marks, or many searches for few right answers, show a pair that needs help with finding key words.</p>
         <div id="res-box"><div class="ph"><b>Loading</b><p>The results will appear here.</p></div></div>
       </div>
 
@@ -399,8 +411,6 @@
       </div>
       <a class="back" href="#top">Back to the top</a>
     </div>
-    <a class="big" href="#play">Play Word Hunt</a>
-    <div class="meta"><span>Word Hunt</span><span>Innovation exhibition</span><span>2026</span></div>
   </div>
 </footer>
 
