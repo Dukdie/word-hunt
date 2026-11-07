@@ -151,7 +151,7 @@
   .seg button { border:0; background:transparent; color:var(--ink); font:700 var(--t-body)/1 "Andika",sans-serif; padding:.85rem 1.4rem; border-radius:999px; cursor:pointer; transition:background-color .2s, color .2s, transform 120ms var(--ease); }
   .seg { position:relative; }
   .seg button { position:relative; z-index:1; }
-  .seg .thumb { display:none; position:absolute; top:.25rem; bottom:.25rem; left:0; width:0; border-radius:999px; background:var(--ink); transition:transform .4s var(--ease), width .4s var(--ease); }
+  .seg .thumb { display:none; position:absolute; top:.25rem; bottom:.25rem; left:0; width:0; border-radius:999px; background:var(--ink); transform-origin:0 50%; transition:transform .4s var(--ease); }
   .seg.has-thumb .thumb { display:block; }
   .seg.has-thumb button { transition:color .2s, background-color 0s, transform 120ms var(--ease); }
   .seg.has-thumb button[aria-selected="true"] { color:var(--on-dark); background:var(--ink); transition:color .2s, background-color 0s .35s, transform 120ms var(--ease); }
@@ -835,7 +835,7 @@
     if (!seg) return;
     var on = seg.querySelector('[aria-selected="true"]'); if (!on) return;
     seg.classList.add("has-thumb");
-    thumb.style.width = on.offsetWidth + "px"; thumb.style.transform = "translateX(" + on.offsetLeft + "px)";
+    var base = seg.querySelector("button").offsetWidth; thumb.style.width = base + "px"; thumb.style.transform = "translateX(" + on.offsetLeft + "px) scaleX(" + (on.offsetWidth / base).toFixed(4) + ")";
   }
   if (seg) {
     seg.addEventListener("click", function () { setTimeout(place, 0); });
