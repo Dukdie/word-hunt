@@ -174,15 +174,19 @@
   /* ---- verdict: the teacher's words, large, on dark ---- */
   .verdict { background:var(--ink); color:var(--on-dark); }
   .verdict .wrap { position:relative; }
-  .verdict blockquote { margin:0; position:relative; display:grid; grid-template-columns:7fr 5fr; gap:var(--s3) var(--s5); align-items:end; }
-  .verdict .lead-q { font-size:var(--t-h2); font-weight:800; line-height:1.02; letter-spacing:-.035em; }
-  .verdict .rest { margin:0; font-size:var(--t-lead); line-height:1.55; }
-  .verdict .qm { color:var(--sun); }
-  .verdict .rest .qm { font-size:2.2em; line-height:0; vertical-align:-.28em; margin-left:.12em; font-weight:800; }
+  .vq { margin:0; display:grid; grid-template-columns:8fr 4fr; gap:var(--s4) var(--s5); align-items:end; }
+  .vq-text { padding-bottom:var(--s5); }
+  .vq-open { display:block; font-size:9rem; line-height:.7; height:4.5rem; font-weight:800; color:var(--sun); }
+  .vq blockquote { margin:0; max-width:44rem; }
+  .vq .lead { display:block; font-size:var(--t-h2); font-weight:800; line-height:1.02; letter-spacing:-.035em; margin-bottom:var(--s3); }
+  .vq .body { margin:0; font-size:var(--t-lead); line-height:1.55; }
+  .vq .qm { color:var(--sun); font-size:2.2em; line-height:0; vertical-align:-.28em; margin-left:.12em; font-weight:800; }
+  .vq figcaption { display:flex; align-items:center; gap:var(--s2); margin-top:var(--s4); font-size:var(--t-lead); }
+  .vq figcaption::before { content:""; width:3rem; height:.3rem; background:var(--sun); flex:none; }
+  .vq figcaption strong { color:var(--sun); font-weight:800; }
+  .teacher { display:block; width:100%; max-width:22rem; justify-self:center; margin-bottom:calc(var(--sec) * -1 + 1px); }
   .js .lw { opacity:.3; transition:opacity .3s; }
   .js .lw.on { opacity:1; }
-  .verdict figcaption { margin-top:var(--s4); font-size:var(--t-lead); position:relative; }
-  .verdict figcaption strong { color:var(--sun); font-weight:800; }
   .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
   /* ---- placeholders ---- */
@@ -325,6 +329,7 @@
   .fb-analysis.in .stat { animation:rowin .7s var(--ease) both; }
   .fb-analysis.in .stat:nth-child(2) { animation-delay:70ms; } .fb-analysis.in .stat:nth-child(3) { animation-delay:140ms; }
   .fb-analysis.in .stat:nth-child(4) { animation-delay:210ms; } .fb-analysis.in .stat:nth-child(5) { animation-delay:280ms; } .fb-analysis.in .stat:nth-child(6) { animation-delay:350ms; }
+  @media (max-width:860px) { .teacher { max-width:13rem; margin-bottom:calc(var(--sec) * -1 + 1px); justify-self:start; } .vq-open { font-size:6rem; height:3rem; } }
   @media (max-width:860px) { #play, #teachers, #guide, #verdict, #results, #feedback, .close { margin-top:-1.25rem; border-radius:1.25rem 1.25rem 0 0; } }
   @media (prefers-reduced-motion:reduce) {
     .pat::before, .coral::after { animation:none; }
@@ -340,7 +345,7 @@
     .hero-lens { width:15rem; right:-4rem; top:-1rem; opacity:.7; }
     h1, .hero-side { grid-column:1; }
     .slot { width:1.8em; }
-    .head, .how, .teach, .two, .fb-cta, .ana, .close .notes, .verdict blockquote { grid-template-columns:1fr; }
+    .head, .how, .teach, .two, .fb-cta, .ana, .close .notes, .vq { grid-template-columns:1fr; }
     .fb-form { grid-template-columns:1fr; }
     .slip { grid-template-columns:1fr 6rem; }
     .slip .bar { grid-column:1 / -1; grid-row:2; }
@@ -374,10 +379,10 @@
   <div class="wrap">
     <a class="brand" href="#top"><span class="badge" aria-hidden="true"><svg><use href="#lens"/></svg></span>Word Hunt</a>
     <nav aria-label="Main">
-      <a href="#how">How it works</a>
+      <a href="#how">Steps</a>
       <a href="#play">Play</a>
-      <a href="#teachers">Teachers</a>
-      <a href="#guide">User guide</a>
+      <a href="#teachers">Classroom</a>
+      <a href="#guide">Guides</a>
       <a href="#results">Results</a>
       <a href="#feedback">Feedback</a>
     </nav>
@@ -507,12 +512,46 @@
   <section class="band verdict pat pat-light" id="verdict" aria-labelledby="v-h">
     <div class="wrap">
       <h2 id="v-h" class="sr">A teacher's verdict</h2>
-      <figure style="margin:0" class="reveal">
-        <blockquote>
-          <p class="lead-q"><span class="qm" aria-hidden="true">&ldquo;</span>My students love it.</p>
-          <p class="rest"><span class="words">I also like the colour design of yellow and cream; it looks neat. I think it is easy to use because it also has a feature where I can generate stories, so I don't need to spend time creating them. The questions that come with the stories are also good and have good distractors.</span><span class="qm" aria-hidden="true">&rdquo;</span></p>
-        </blockquote>
-        <figcaption><strong>Adib Nifail</strong>, SJKC La Salle</figcaption>
+      <figure class="vq reveal">
+        <div class="vq-text">
+          <span class="vq-open" aria-hidden="true">&ldquo;</span>
+          <blockquote>
+            <p class="body"><span class="lead">My students love it.</span><span class="words">I also like the colour design of yellow and cream; it looks neat. I think it is easy to use because it also has a feature where I can generate stories, so I don't need to spend time creating them. The questions that come with the stories are also good and have good distractors.</span><span class="qm" aria-hidden="true">&rdquo;</span></p>
+          </blockquote>
+          <figcaption><strong>Adib Nifail</strong> Teacher, SJKC La Salle</figcaption>
+        </div>
+        <svg class="teacher" viewBox="0 0 300 380" role="img" aria-label="A teacher wearing a hat made from the Word Hunt lens icon" data-ui>
+  <defs><clipPath id="hd"><circle cx="150" cy="100" r="50"/></clipPath></defs>
+  <!-- torso: an isometric block, lit from the left -->
+  <path d="M50 175L150 220V380H50Z" fill="#FF6B57"/>
+  <path d="M150 220L250 175V380H150Z" fill="#D9503E"/>
+  <path d="M50 175L150 130L250 175L150 220Z" fill="#FF8A78"/>
+  <!-- belt -->
+  <path d="M50 295L150 340V355L50 310Z" fill="#0E1722"/>
+  <path d="M150 340L250 295V310L150 355Z" fill="#0A111A"/>
+  <rect x="138" y="334" width="24" height="26" rx="3" fill="#FFD43B" stroke="#1D2B3A" stroke-width="3"/>
+  <rect x="146" y="342" width="8" height="10" fill="#1D2B3A"/>
+  <!-- name tag on the chest -->
+  <g transform="matrix(100 45 0 110 50 175)"><rect x=".14" y=".2" width=".36" height=".22" rx=".03" fill="#FFF8E7"/><rect x=".19" y=".27" width=".16" height=".03" fill="#1D2B3A"/><rect x=".19" y=".34" width=".24" height=".025" fill="#1D2B3A" opacity=".4"/></g>
+  <!-- collar and neck -->
+  <path d="M118 168L150 190L182 168L150 150Z" fill="#FFF8E7"/>
+  <path d="M136 128H164V172Q150 184 136 172Z" fill="#E8A57C"/>
+  <path d="M150 128H164V172Q158 178 150 180Z" fill="#CF8A5E"/>
+  <!-- head -->
+  <circle cx="150" cy="100" r="50" fill="#F2B48C"/>
+  <path d="M150 50A50 50 0 0 1 150 150Z" fill="#CF8A5E" opacity=".35" clip-path="url(#hd)"/>
+  <ellipse cx="99" cy="104" rx="7" ry="11" fill="#E8A57C"/><ellipse cx="201" cy="104" rx="7" ry="11" fill="#CF8A5E"/>
+  <!-- hair -->
+  <path d="M101 88Q104 66 150 66Q196 66 199 88Q192 76 150 76Q108 76 101 88Z" fill="#4A2F25"/>
+  <!-- face -->
+  <g fill="none" stroke="#1D2B3A" stroke-width="4" stroke-linecap="round"><circle cx="131" cy="104" r="13"/><circle cx="169" cy="104" r="13"/><path d="M144 103Q150 99 156 103"/><path d="M134 130Q150 143 166 130"/></g>
+  <circle cx="131" cy="104" r="3.5" fill="#1D2B3A"/><circle cx="169" cy="104" r="3.5" fill="#1D2B3A"/>
+  <!-- the hat: the Word Hunt badge, set flat like a mortarboard -->
+  <path d="M82 52L150 82V94L82 64Z" fill="#D9B02C"/>
+  <path d="M150 82L218 52V64L150 94Z" fill="#B8921F"/>
+  <path d="M82 52L150 22L218 52L150 82Z" fill="#FFD43B"/>
+  <g transform="matrix(68 -30 68 30 82 52)" fill="none" stroke="#1D2B3A" stroke-width=".085" stroke-linecap="round"><circle cx=".38" cy=".38" r=".2"/><path d="M.53 .53L.78 .78"/></g>
+</svg>
       </figure>
     </div>
   </section>
@@ -665,7 +704,7 @@
 
     // three collapsible tables, one for each story
     var stories = {}; order.forEach(function (k) { (stories[rec[k].n] = stories[rec[k].n] || []).push(rec[k]); });
-    var cols = [["pair", "Pair", "a"], ["score", "Score", "d"], ["first", "Right on the first try", "d"], ["time", "Time", "a"], ["searches", "Searches", "a"], ["mistakes", "Mistakes", "a"], ["main", "Main mistake", "a"]];
+    var cols = [["pair", "Pair", "a"], ["score", "Score", "d"], ["first", "Right on the first try", "d"], ["time", "Time", "a"], ["searches", "Searches", "a"], ["mistakes", "Mistakes", "a"], ["main", "Issue", "a"]];
     var box = document.getElementById("res-box"); box.innerHTML = "";
     Object.keys(stories).sort().forEach(function (n, idx) {
       var rows = stories[n], avg = Math.round(rows.reduce(function (t, r) { return t + r.score; }, 0) / rows.length), base = rows.slice();
