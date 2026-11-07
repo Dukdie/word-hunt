@@ -136,21 +136,19 @@
   .gpanel.has-pdf object { display:block; height:min(82vh,48rem); min-height:30rem; }
   .gpanel .ph { background:var(--ground); }
   .gpanel.has-pdf .ph { display:none; }
-  .fb-top { display:grid; grid-template-columns:7fr 5fr; gap:var(--s4); align-items:stretch; }
-  .quote { margin:0; background:var(--sun); padding:var(--s4); display:flex; flex-direction:column; justify-content:space-between; gap:var(--s3); }
-  .quote blockquote { margin:0; font-size:var(--t-lead); line-height:1.5; }
-  .quote blockquote strong { font-weight:800; }
-  .quote figcaption { font-size:var(--t-lead); }
-  .snap { margin:0; background:var(--note); min-height:16rem; }
-  .snap img { width:100%; height:100%; object-fit:cover; display:block; }
-  .snap-ph { padding:var(--s3); }
-  .snap-ph b { display:block; margin-bottom:var(--s1); }
+  .quote { position:relative; margin:0; background:var(--sun); padding:clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,4rem) clamp(2rem,5vw,3rem); }
+  .quote .qmark { position:absolute; left:clamp(1rem,3vw,2.5rem); top:-.1em; font-size:clamp(7rem,14vw,12rem); line-height:1; font-weight:800; color:var(--ink); }
+  .quote blockquote { margin:clamp(2.5rem,6vw,4rem) 0 0; max-width:50rem; }
+  .quote blockquote p { font-size:var(--t-lead); line-height:1.55; }
+  .quote blockquote strong { font-weight:800; font-size:var(--t-h3); line-height:1.1; letter-spacing:-.02em; display:block; margin-bottom:var(--s2); }
+  .quote figcaption { margin-top:var(--s3); font-size:var(--t-lead); }
   .fb-results, .fb-analysis { margin-top:var(--sec); }
   .fb-results h3, .fb-analysis h3 { font-size:var(--t-h3); line-height:1.05; letter-spacing:-.03em; font-weight:800; }
   .fb-note { margin:var(--s1) 0 var(--s3); }
-  .tbl { overflow-x:auto; background:var(--note); }
-  .tbl table { width:100%; border-collapse:collapse; min-width:42rem; }
-  .tbl th, .tbl td { text-align:left; padding:var(--s2) var(--s3); font-size:var(--t-body); font-weight:400; white-space:nowrap; }
+  .tbl { background:var(--note); }
+  .tbl-more { margin-top:var(--s2); }
+  .tbl table { width:100%; border-collapse:collapse; }
+  .tbl th, .tbl td { text-align:left; padding:var(--s2) var(--s3); font-size:var(--t-body); font-weight:400; }
   .tbl th { background:var(--ink); color:var(--on-dark); font-weight:700; }
   .tbl tbody tr:nth-child(even) td { background:var(--ground); }
   .tbl td:first-child { font-weight:700; }
@@ -161,11 +159,20 @@
   .stat span { display:block; margin-top:var(--s1); }
   .slips { background:var(--note); padding:var(--s3); }
   .slips p.t { font-size:var(--t-lead); font-weight:800; margin-bottom:var(--s2); }
-  .slip { display:grid; grid-template-columns:1fr 3fr 4.5rem; gap:var(--s2); align-items:center; margin-top:var(--s2); }
+  .slip { display:grid; grid-template-columns:minmax(11rem,1.4fr) 2fr 6rem; gap:var(--s2); align-items:center; margin-top:var(--s2); }
   .slip .bar { height:1.1rem; background:var(--ground); }
   .slip .bar i { display:block; height:100%; background:var(--coral); width:0; transition:width 1s var(--ease); }
   .slip .n { text-align:right; font-weight:700; }
-  .fb-form { margin-top:var(--sec); }
+  .fb-cta { margin-top:var(--sec); background:var(--ink); color:var(--on-dark); padding:clamp(1.5rem,4vw,3rem); display:grid; grid-template-columns:5fr 7fr; gap:var(--s4); align-items:start; }
+  .fb-cta h3 { font-size:var(--t-h3); line-height:1.05; letter-spacing:-.03em; font-weight:800; }
+  .fb-cta-text p { margin-top:var(--s2); font-size:var(--t-lead); line-height:1.5; }
+  .fb-form { display:grid; grid-template-columns:1fr 1fr; gap:var(--s2); }
+  .fb-form label { display:grid; gap:.35rem; font-weight:700; }
+  .fb-form label.wide { grid-column:1 / -1; }
+  .fb-form input, .fb-form select, .fb-form textarea { width:100%; border:0; border-radius:0; padding:.8rem 1rem; background:var(--ground); color:var(--ink); font:400 var(--t-body)/1.4 "Andika",sans-serif; }
+  .fb-form textarea { resize:vertical; }
+  .fb-form input:focus-visible, .fb-form select:focus-visible, .fb-form textarea:focus-visible { outline:3px solid var(--sun); outline-offset:2px; }
+  .fb-actions { grid-column:1 / -1; display:flex; gap:var(--s1); flex-wrap:wrap; margin-top:var(--s1); }
   .two { display:grid; grid-template-columns:1fr 1fr; gap:var(--s2); }
   .form-embed iframe { display:block; width:100%; height:42rem; border:0; background:var(--ground); }
 
@@ -184,12 +191,14 @@
     .hero .wrap { grid-template-columns:1fr; }
     h1, .hero-side { grid-column:1; }
     .slot { width:1.8em; }
-    .head, .how, .teach, .two, .gtabs, .fb-top, .ana, .close .notes { grid-template-columns:1fr; }
-    .slip { grid-template-columns:1fr 4.5rem; }
+    .head, .how, .teach, .two, .gtabs, .fb-cta, .ana, .close .notes { grid-template-columns:1fr; }
+    .fb-form { grid-template-columns:1fr; }
+    .slip { grid-template-columns:1fr 6rem; }
     .slip .bar { grid-column:1 / -1; grid-row:2; }
     .head { align-items:start; }
     .close .back { justify-self:start; }
   }
+  @media (max-width:700px) { .tbl th, .tbl td { padding:var(--s1); font-size:var(--t-small); } }
   @media (max-width:560px) {
     h1 { font-size:clamp(2.75rem,14vw,4rem); }
     .btn { width:100%; }
@@ -337,30 +346,45 @@
     <div class="wrap">
       <div class="head">
         <h2 id="f-h" class="reveal">What testers said.</h2>
-        <p class="intro reveal" style="--d:80ms">We tested Word Hunt with a real class. Here is what they said and how they did.</p>
-      </div>
-      <div class="fb-top">
-        <figure class="quote reveal" id="quote">
-          <blockquote><strong>My students love it.</strong> I also like the colour design of yellow and cream; it looks neat. I think it is easy to use because it also has a feature where I can generate stories, so I don't need to spend time creating them. The questions that come with the stories are also good and have good distractors.</blockquote>
-          <figcaption><strong>Adib Nifail</strong>, SJKC La Salle</figcaption>
-        </figure>
-        <figure class="snap reveal" id="snap" style="--d:100ms">
-          <div class="snap-ph"><b>Placeholder</b><p>A photo from the testing day will be placed here.</p></div>
-        </figure>
+        <p class="intro reveal" style="--d:80ms">A teacher tried Word Hunt with a class. Here are the teacher's words, and the results of our pilot run.</p>
       </div>
 
+      <figure class="quote reveal">
+        <span class="qmark" aria-hidden="true">&ldquo;</span>
+        <blockquote>
+          <p><strong>My students love it.</strong> I also like the colour design of yellow and cream; it looks neat. I think it is easy to use because it also has a feature where I can generate stories, so I don't need to spend time creating them. The questions that come with the stories are also good and have good distractors.</p>
+        </blockquote>
+        <figcaption><strong>Adib Nifail</strong>, SJKC La Salle</figcaption>
+      </figure>
+
       <div class="fb-results reveal" id="fb-results">
-        <h3>Class results</h3>
-        <p class="fb-note">Names are shortened to the first three letters.</p>
-        <div id="res-box"><div class="ph"><b>Coming soon</b><p>The class results will appear here.</p></div></div>
+        <h3>Pilot results</h3>
+        <p class="fb-note">An automated pilot with 22 pairs, run on 7 November 2026. Names are shortened to the first three letters.</p>
+        <div id="res-box"><div class="ph"><b>Loading</b><p>The results will appear here.</p></div></div>
       </div>
 
       <div class="fb-analysis reveal" id="fb-analysis">
-        <h3>How the class did</h3>
-        <div id="ana-box"><div class="ph"><b>Coming soon</b><p>The analysis will appear here.</p></div></div>
+        <h3>How the pairs did</h3>
+        <div id="ana-box"><div class="ph"><b>Loading</b><p>The analysis will appear here.</p></div></div>
       </div>
 
-      <div class="fb-form reveal" id="form-box"><div class="ph"><b>Placeholder</b><p>The feedback form will be placed here.</p></div></div>
+      <div class="fb-cta reveal" id="fbcta">
+        <div class="fb-cta-text">
+          <h3>Tell us what you think.</h3>
+          <p>Tried Word Hunt? Your message goes straight to our inbox. It takes one minute.</p>
+        </div>
+        <form class="fb-form" id="fbform" onsubmit="return false">
+          <label>Your name (optional)<input id="fb-name" type="text" autocomplete="name"></label>
+          <label>I am a<select id="fb-role"><option>Teacher</option><option>Pupil</option><option>Parent</option><option>Other</option></select></label>
+          <label class="wide">What did you like?<textarea id="fb-like" rows="3"></textarea></label>
+          <label class="wide">What could be better?<textarea id="fb-better" rows="3"></textarea></label>
+          <div class="fb-actions">
+            <a class="btn" id="fb-gmail" target="_blank" rel="noopener" href="#">Open Gmail</a>
+            <a class="btn alt" id="fb-mail" href="#">Open email app</a>
+            <button class="btn alt" id="fb-copy" type="button">Copy the message</button>
+          </div>
+        </form>
+      </div>
     </div>
   </section>
 </main>
@@ -382,13 +406,6 @@
 
 <script>
 (function () {
-  // To show the Google Form: paste its embed link between the quotes. Leave it empty to keep the placeholder.
-  var FORM_URL = "";
-  if (FORM_URL) {
-    var box = document.getElementById("form-box");
-    box.className = "form-embed"; box.innerHTML = '<iframe src="' + FORM_URL + '" title="Feedback form">Loading</iframe>';
-  }
-
   // guides: two tabs; the PDF viewer appears only when the file is really there
   var gtabs = document.querySelectorAll(".gtab"), gpanels = document.querySelectorAll(".gpanel");
   gtabs.forEach(function (t, k) {
@@ -397,10 +414,7 @@
   });
   gpanels.forEach(function (p) { if (window.fetch) fetch(p.getAttribute("data-pdf"), { method: "HEAD" }).then(function (r) { if (r.ok) p.classList.add("has-pdf"); }).catch(function () {}); });
 
-  // feedback: a photo and the class results appear when their files are in the "feedback" folder
-  var snap = document.getElementById("snap");
-  var probe = new Image(); probe.onload = function () { snap.innerHTML = ""; probe.alt = "The class testing Word Hunt"; snap.appendChild(probe); }; probe.src = "feedback/testing-day.jpg";
-
+  // feedback: the class results load from the files in the "feedback" folder
   function parseCSV(t) {
     t = t.replace(/^\uFEFF/, ""); var rows = [], row = [], cell = "", q = false;
     for (var i = 0; i < t.length; i++) {
@@ -421,10 +435,13 @@
   load("feedback/results.csv").then(function (rows) {
     if (!rows.length) return;
     var h = "<div class=\"tbl\"><table><thead><tr><th>Pupil</th><th>Story</th><th>Right answers</th><th>Seconds</th><th>Searches</th><th>Marks</th></tr></thead><tbody>";
-    rows.forEach(function (r) {
-      h += "<tr><td>" + esc2(short(r["Pupil"])) + "</td><td>" + esc2(r["Story"]) + "</td><td>" + esc2(r["Right answers"]) + " of " + esc2(r["Questions"]) + "</td><td>" + esc2(r["Seconds"]) + "</td><td>" + esc2(r["Searches"]) + "</td><td>" + esc2(r["Marks"]) + " of " + esc2(r["Out of"]) + "</td></tr>";
+    rows.forEach(function (r, i) {
+      h += "<tr" + (i >= 10 ? " class=\"more\" hidden" : "") + "><td>" + esc2(short(r["Pupil"])) + "</td><td>" + esc2(r["Story"]) + "</td><td>" + esc2(r["Right answers"]) + " of " + esc2(r["Questions"]) + "</td><td>" + esc2(r["Seconds"]) + "</td><td>" + esc2(r["Searches"]) + "</td><td>" + esc2(r["Marks"]) + " of " + esc2(r["Out of"]) + "</td></tr>";
     });
-    document.getElementById("res-box").innerHTML = h + "</tbody></table></div>";
+    var box = document.getElementById("res-box");
+    box.innerHTML = h + "</tbody></table></div>" + (rows.length > 10 ? "<button class=\"btn alt tbl-more\" type=\"button\" id=\"tbl-btn\">Show all " + rows.length + " rows</button>" : "");
+    var tb2 = document.getElementById("tbl-btn");
+    if (tb2) tb2.addEventListener("click", function () { var open = tb2.getAttribute("data-open") !== "1"; box.querySelectorAll("tr.more").forEach(function (r) { r.hidden = !open; }); tb2.setAttribute("data-open", open ? "1" : "0"); tb2.textContent = open ? "Show fewer rows" : "Show all " + rows.length + " rows"; });
   }).catch(function () {});
 
   load("feedback/answers.csv").then(function (rows) {
@@ -458,6 +475,24 @@
     var box = document.getElementById("ana-box"); box.innerHTML = h;
     setTimeout(function () { box.querySelectorAll(".bar i").forEach(function (i) { i.style.width = Math.max(+i.getAttribute("data-w"), 1) + "%"; }); }, 150);
   }).catch(function () {});
+
+  // feedback by email: the same idea as "Email teacher" in the game
+  var FB_TO = "g-ipgp22212562@moe-dl.edu.my";
+  function fbText() {
+    var name = document.getElementById("fb-name").value.trim(), role = document.getElementById("fb-role").value;
+    var like = document.getElementById("fb-like").value.trim(), better = document.getElementById("fb-better").value.trim();
+    return ["Hello,", "", "Here is my feedback on Word Hunt.", "", "My name: " + (name || "(not given)"), "I am a: " + role, "", "What I liked:", like || "-", "", "What could be better:", better || "-", "", "Thank you."].join("\n");
+  }
+  function fbLinks() {
+    var sub = "Word Hunt feedback", body = fbText();
+    document.getElementById("fb-mail").href = "mailto:" + FB_TO + "?subject=" + encodeURIComponent(sub) + "&body=" + encodeURIComponent(body.replace(/\n/g, "\r\n"));
+    document.getElementById("fb-gmail").href = "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(FB_TO) + "&su=" + encodeURIComponent(sub) + "&body=" + encodeURIComponent(body);
+  }
+  document.getElementById("fbform").addEventListener("input", fbLinks); fbLinks();
+  document.getElementById("fb-copy").addEventListener("click", function () {
+    var b = this, text = "To: " + FB_TO + "\nSubject: Word Hunt feedback\n\n" + fbText();
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy the message"; }, 1800); }).catch(function () { b.textContent = "Press Ctrl+C to copy"; });
+  });
 
   // entrances: each part rises in once as it arrives
   var els = document.querySelectorAll(".reveal");
