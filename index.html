@@ -145,15 +145,30 @@
   .fb-results, .fb-analysis { margin-top:var(--sec); }
   .fb-results h3, .fb-analysis h3 { font-size:var(--t-h3); line-height:1.05; letter-spacing:-.03em; font-weight:800; }
   .fb-note { margin:var(--s1) 0 var(--s3); max-width:46rem; }
-  .tbl { background:var(--note); }
-  .tbl-more { margin-top:var(--s2); }
+  .story { margin-top:var(--s1); background:var(--note); }
+  .story-h { display:flex; align-items:center; justify-content:space-between; gap:var(--s2); width:100%; padding:var(--s3); border:0; background:var(--ink); color:var(--on-dark); font:inherit; text-align:left; cursor:pointer; transition:transform 120ms var(--ease); }
+  .story-h:active { transform:scale(.985); }
+  .story-h b { font-size:var(--t-lead); font-weight:800; }
+  .story-h .avg { margin-left:auto; font-weight:700; }
+  .story-h .chev { width:.7rem; height:.7rem; border-right:3px solid currentColor; border-bottom:3px solid currentColor; transform:rotate(45deg) translateY(-2px); transition:transform 200ms var(--ease); flex:none; }
+  .story.open .story-h .chev { transform:rotate(225deg) translateY(-2px); }
+  .story-body { display:grid; grid-template-rows:0fr; transition:grid-template-rows 180ms var(--ease); }
+  .story.open .story-body { grid-template-rows:1fr; transition-duration:250ms; }
+  .story-body > div { overflow:hidden; min-height:0; visibility:hidden; transition:visibility 0s linear 180ms; }
+  .story.open .story-body > div { visibility:visible; transition-delay:0s; }
   .tbl table { width:100%; border-collapse:collapse; }
-  .tbl th, .tbl td { text-align:left; padding:var(--s2) var(--s3); font-size:var(--t-body); font-weight:400; }
-  .tbl th { background:var(--ink); color:var(--on-dark); font-weight:700; }
+  .tbl th, .tbl td { text-align:left; padding:var(--s2) var(--s3); font-size:var(--t-body); font-weight:400; font-variant-numeric:tabular-nums; }
+  .tbl th { padding:0; font-weight:700; background:var(--ground); }
+  .tbl th button { display:flex; align-items:center; gap:.4rem; width:100%; padding:var(--s2) var(--s3); border:0; background:transparent; color:var(--ink); font:inherit; font-weight:700; text-align:left; cursor:pointer; transition:transform 120ms var(--ease), background-color 160ms; }
+  .tbl th button:active { transform:scale(.97); }
+  .tbl th button .arr { flex:none; width:0; height:0; border-left:.3rem solid transparent; border-right:.3rem solid transparent; border-bottom:.45rem solid currentColor; opacity:.3; transition:transform 150ms var(--ease), opacity 150ms; }
+  .tbl th[aria-sort] button .arr { opacity:1; }
+  .tbl th[aria-sort="descending"] button .arr { transform:rotate(180deg); }
   .tbl tbody tr:nth-child(even) td { background:var(--ground); }
   .tbl td:first-child { font-weight:700; }
   .ana { display:grid; grid-template-columns:5fr 7fr; gap:var(--s4); margin-top:var(--s3); align-items:start; }
   .stats { display:grid; grid-template-columns:1fr 1fr; gap:var(--s1); }
+  .stat b, .tbl td { font-variant-numeric:tabular-nums; }
   .stat { background:var(--sun); padding:var(--s3); }
   .stat b { display:block; font-size:var(--t-h3); line-height:1; letter-spacing:-.03em; font-weight:800; }
   .stat span { display:block; margin-top:var(--s1); }
@@ -161,7 +176,7 @@
   .slips p.t { font-size:var(--t-lead); font-weight:800; margin-bottom:var(--s2); }
   .slip { display:grid; grid-template-columns:minmax(11rem,1.4fr) 2fr 6rem; gap:var(--s2); align-items:center; margin-top:var(--s2); }
   .slip .bar { height:1.1rem; background:var(--ground); }
-  .slip .bar i { display:block; height:100%; background:var(--coral); width:0; transition:width 1s var(--ease); }
+  .slip .bar i { display:block; height:100%; background:var(--coral); width:0; transition:width 700ms var(--ease); }
   .slip .n { text-align:right; font-weight:700; }
   .fb-cta { margin-top:var(--sec); background:var(--ink); color:var(--on-dark); padding:clamp(1.5rem,4vw,3rem); display:grid; grid-template-columns:5fr 7fr; gap:var(--s4); align-items:start; }
   .fb-cta h3 { font-size:var(--t-h3); line-height:1.05; letter-spacing:-.03em; font-weight:800; }
@@ -198,7 +213,9 @@
     .head { align-items:start; }
     .close .back { justify-self:start; }
   }
-  @media (max-width:700px) { .tbl th, .tbl td { padding:var(--s1); font-size:var(--t-small); } }
+  @media (max-width:560px) { .fb-results h3 { font-size:var(--t-lead); line-height:1.25; } }
+  @media (max-width:700px) { .tbl th button, .tbl td { padding:var(--s1); font-size:var(--t-small); } .story-h { padding:var(--s2); } }
+  @media (prefers-reduced-motion:reduce) { .story-body, .story-h, .story-h .chev, .tbl th button, .tbl th button .arr, .slip .bar i { transition:none; } }
   @media (max-width:560px) {
     h1 { font-size:clamp(2.75rem,14vw,4rem); }
     .btn { width:100%; }
@@ -430,49 +447,110 @@
   function esc2(x) { return String(x == null ? "" : x).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function load(url) { return fetch(url).then(function (r) { if (!r.ok) throw 0; return r.text(); }).then(parseCSV); }
 
-  load("feedback/results.csv").then(function (rows) {
-    if (!rows.length) return;
-    var h = "<div class=\"tbl\"><table><thead><tr><th>Pupil</th><th>Story</th><th>Right answers</th><th>Seconds</th><th>Searches</th><th>Marks</th></tr></thead><tbody>";
-    rows.forEach(function (r, i) {
-      h += "<tr" + (i >= 10 ? " class=\"more\" hidden" : "") + "><td>" + esc2(short(r["Pupil"])) + "</td><td>" + esc2(r["Story"]) + "</td><td>" + esc2(r["Right answers"]) + " of " + esc2(r["Questions"]) + "</td><td>" + esc2(r["Seconds"]) + "</td><td>" + esc2(r["Searches"]) + "</td><td>" + esc2(r["Marks"]) + " of " + esc2(r["Out of"]) + "</td></tr>";
-    });
-    var box = document.getElementById("res-box");
-    box.innerHTML = h + "</tbody></table></div>" + (rows.length > 10 ? "<button class=\"btn alt tbl-more\" type=\"button\" id=\"tbl-btn\">Show all " + rows.length + " rows</button>" : "");
-    var tb2 = document.getElementById("tbl-btn");
-    if (tb2) tb2.addEventListener("click", function () { var open = tb2.getAttribute("data-open") !== "1"; box.querySelectorAll("tr.more").forEach(function (r) { r.hidden = !open; }); tb2.setAttribute("data-open", open ? "1" : "0"); tb2.textContent = open ? "Show fewer rows" : "Show all " + rows.length + " rows"; });
-  }).catch(function () {});
+  var CATS = ["Answered without hunting", "Searched a very common word", "Chose a detail about someone else", "Lost track of he or she", "Missed a not or no"];
+  var calm2 = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function mmss(sec) { sec = Math.round(sec); return Math.floor(sec / 60) + ":" + ("0" + (sec % 60)).slice(-2); }
 
-  load("feedback/answers.csv").then(function (rows) {
-    if (!rows.length) return;
-    var n = rows.length, num = function (v) { return parseFloat(v) || 0; };
-    var first = rows.filter(function (r) { return num(r["Marks"]) > 0 && num(r["Tries"]) === 1; }).length;
-    var right = rows.filter(function (r) { return num(r["Marks"]) > 0; }).length;
-    var missed = n - right;
-    var withMistake = rows.filter(function (r) { return (r["Wrong answers"] || "").trim() !== ""; });
-    var clean = rows.filter(function (r) { return (r["Wrong answers"] || "").trim() === ""; });
-    var avg = function (a) { return a.length ? Math.round(a.reduce(function (t, r) { return t + num(r["Seconds in total"]); }, 0) / a.length) : 0; };
-    var pct = function (x) { return Math.round(100 * x / n) + "%"; };
-    var trap = function (k) { return rows.filter(function (r) { return (r["Traps fallen for"] || "").indexOf(k) > -1; }).length; };
+  Promise.all([load("feedback/results.csv").catch(function () { return []; }), load("feedback/answers.csv").catch(function () { return []; })]).then(function (both) {
+    var res = both[0], ans = both[1], num = function (v) { return parseFloat(v) || 0; };
+    if (!res.length) return;
+
+    // one record for each pair and story
+    var rec = {}, order = [];
+    var key = function (r) { return (r["Pair no"] || r["Pupil"]) + "|" + r["Story no"]; };
+    res.forEach(function (r) {
+      var k = key(r); order.push(k);
+      rec[k] = { pair: short(r["Pupil"]), n: +r["Story no"], story: r["Story"], score: Math.round(100 * num(r["Marks"]) / (num(r["Out of"]) || 1)), time: num(r["Seconds"]), searches: num(r["Searches"]), qn: num(r["Questions"]), first: 0, mistakes: 0, cats: [0, 0, 0, 0, 0] };
+    });
+    ans.forEach(function (r) {
+      var o = rec[key(r)]; if (!o) return;
+      if (num(r["Marks"]) > 0 && num(r["Tries"]) === 1) o.first++;
+      o.mistakes += (r["Wrong answers"] || "").split(" | ").filter(function (x) { return x.trim(); }).length;
+      if (r["Keyword searched"] === "none") o.cats[0]++;
+      if (r["Keyword searched"] === "weak") o.cats[1]++;
+      var t = r["Traps fallen for"] || "";
+      if (t.indexOf("distractor") > -1) o.cats[2]++;
+      if (t.indexOf("pronoun") > -1) o.cats[3]++;
+      if (t.indexOf("negation") > -1) o.cats[4]++;
+    });
+    order.forEach(function (k) { var o = rec[k], best = -1, bi = -1; o.cats.forEach(function (c, i) { if (c > best) { best = c; bi = i; } }); o.main = best > 0 ? CATS[bi] : "None"; });
+
+    // three collapsible tables, one for each story
+    var stories = {}; order.forEach(function (k) { (stories[rec[k].n] = stories[rec[k].n] || []).push(rec[k]); });
+    var cols = [["pair", "Pair", "a"], ["score", "Score", "d"], ["first", "Right on the first try", "d"], ["time", "Time", "a"], ["searches", "Searches", "a"], ["mistakes", "Mistakes", "a"], ["main", "Main mistake", "a"]];
+    var box = document.getElementById("res-box"); box.innerHTML = "";
+    Object.keys(stories).sort().forEach(function (n, idx) {
+      var rows = stories[n], avg = Math.round(rows.reduce(function (t, r) { return t + r.score; }, 0) / rows.length), base = rows.slice();
+      var wrap = document.createElement("div"); wrap.className = "story" + (idx === 0 ? " open" : "");
+      var id = "story" + n;
+      wrap.innerHTML = '<button class="story-h" type="button" aria-expanded="' + (idx === 0) + '" aria-controls="' + id + '"><b>Story ' + n + ": " + esc2(rows[0].story) + '</b><span class="avg">' + avg + '% average</span><i class="chev" aria-hidden="true"></i></button><div class="story-body" id="' + id + '"><div><div class="tbl"><table><thead><tr></tr></thead><tbody></tbody></table></div></div></div>';
+      var hr = wrap.querySelector("thead tr"), tb = wrap.querySelector("tbody"), sortKey = null, dir = 1;
+      function paint() {
+        tb.innerHTML = rows.map(function (r) { return "<tr><td>" + esc2(r.pair) + "</td><td>" + r.score + "%</td><td>" + r.first + " of " + r.qn + "</td><td>" + mmss(r.time) + "</td><td>" + r.searches + "</td><td>" + r.mistakes + "</td><td>" + esc2(r.main) + "</td></tr>"; }).join("");
+        hr.querySelectorAll("th").forEach(function (th) { if (th.dataset.k === sortKey) th.setAttribute("aria-sort", dir === 1 ? "ascending" : "descending"); else th.removeAttribute("aria-sort"); });
+      }
+      cols.forEach(function (c) {
+        var th = document.createElement("th"); th.dataset.k = c[0]; th.scope = "col";
+        th.innerHTML = '<button type="button">' + c[1] + '<i class="arr" aria-hidden="true"></i></button>';
+        th.firstChild.addEventListener("click", function () {
+          if (sortKey === c[0]) dir = -dir; else { sortKey = c[0]; dir = c[2] === "a" ? 1 : -1; }
+          var k = c[0], text = k === "pair" || k === "main";
+          rows = rows.slice().sort(function (a, b) { var x = text ? String(a[k]).localeCompare(String(b[k])) : a[k] - b[k]; return x * dir || base.indexOf(a) - base.indexOf(b); });
+          paint();
+        });
+        hr.appendChild(th);
+      });
+      wrap.querySelector(".story-h").addEventListener("click", function () { var o = wrap.classList.toggle("open"); this.setAttribute("aria-expanded", o); });
+      box.appendChild(wrap); paint();
+    });
+
+    // the boxes
+    if (!ans.length) return;
+    var N = ans.length, first = ans.filter(function (r) { return num(r["Marks"]) > 0 && num(r["Tries"]) === 1; }).length;
+    var right = ans.filter(function (r) { return num(r["Marks"]) > 0; }).length;
+    var avgT = ans.reduce(function (t, r) { return t + num(r["Seconds in total"]); }, 0) / N;
+    var pairs = {}; ans.forEach(function (r) { var k = r["Pair no"] || r["Pupil"]; pairs[k] = pairs[k] && (num(r["Marks"]) > 0 && num(r["Tries"]) === 1); if (pairs[k] === undefined) pairs[k] = num(r["Marks"]) > 0 && num(r["Tries"]) === 1; });
+    var pk = Object.keys(pairs), perfect = pk.filter(function (k) { return pairs[k]; }).length;
+    var mist = ans.filter(function (r) { return (r["Wrong answers"] || "").trim() !== ""; }), fixed = mist.filter(function (r) { return num(r["Tries"]) === 2 && num(r["Marks"]) > 0; }).length;
+    var spq = ans.reduce(function (t, r) { return t + num(r["Searches"]); }, 0) / N;
+    var tiles = [
+      { v: 100 * first / N, f: function (x) { return Math.round(x) + "%"; }, l: "right on the first try" },
+      { v: 100 * right / N, f: function (x) { return Math.round(x) + "%"; }, l: "right in the end" },
+      { v: avgT, f: function (x) { return Math.round(x) + " s"; }, l: "average time for a question" },
+      { v: perfect, f: function (x) { return Math.round(x) + " of " + pk.length; }, l: "pairs right on every first try" },
+      { v: mist.length ? 100 * fixed / mist.length : 0, f: function (x) { return Math.round(x) + "%"; }, l: "of mistakes fixed on the next try" },
+      { v: spq, f: function (x) { return x.toFixed(1); }, l: "searches for each question" }
+    ];
+    var trap = function (k) { return ans.filter(function (r) { return (r["Traps fallen for"] || "").indexOf(k) > -1; }).length; };
     var slips = [
-      ["Answered without hunting", rows.filter(function (r) { return r["Keyword searched"] === "none"; }).length],
-      ["Searched a very common word", rows.filter(function (r) { return r["Keyword searched"] === "weak"; }).length],
+      ["Answered without hunting", ans.filter(function (r) { return r["Keyword searched"] === "none"; }).length],
+      ["Searched a very common word", ans.filter(function (r) { return r["Keyword searched"] === "weak"; }).length],
       ["Chose a detail about someone else", trap("distractor")],
       ["Lost track of he or she", trap("pronoun")],
       ["Missed a not or no", trap("negation")]
     ];
-    var h = "<div class=\"ana\"><div class=\"stats\">" +
-      "<div class=\"stat\"><b>" + pct(first) + "</b><span>right on the first try</span></div>" +
-      "<div class=\"stat\"><b>" + pct(right) + "</b><span>right in the end</span></div>" +
-      "<div class=\"stat\"><b>" + pct(missed) + "</b><span>not right after 3 tries</span></div>" +
-      "<div class=\"stat\"><b>" + avg(rows) + " s</b><span>average time for a question</span></div>" +
-      "<div class=\"stat\"><b>" + avg(withMistake) + " s</b><span>when the pupil made a mistake</span></div>" +
-      "<div class=\"stat\"><b>" + avg(clean) + " s</b><span>with no mistake</span></div></div>" +
-      "<div class=\"slips\"><p class=\"t\">Where pupils slipped</p>";
-    slips.forEach(function (s) { h += "<div class=\"slip\"><span>" + s[0] + "</span><div class=\"bar\"><i data-w=\"" + Math.round(100 * s[1] / n) + "\"></i></div><span class=\"n\">" + s[1] + " of " + n + "</span></div>"; });
-    h += "</div></div>";
-    var box = document.getElementById("ana-box"); box.innerHTML = h;
-    setTimeout(function () { box.querySelectorAll(".bar i").forEach(function (i) { i.style.width = Math.max(+i.getAttribute("data-w"), 1) + "%"; }); }, 150);
-  }).catch(function () {});
+    var h = '<div class="ana"><div class="stats">';
+    tiles.forEach(function (t, i) { h += '<div class="stat"><b data-i="' + i + '">' + t.f(t.v) + "</b><span>" + t.l + "</span></div>"; });
+    h += '</div><div class="slips"><p class="t">Where pupils slipped</p>';
+    slips.forEach(function (sl, i) { h += '<div class="slip"><span>' + sl[0] + '</span><div class="bar"><i data-w="' + Math.round(100 * sl[1] / N) + '" style="transition-delay:' + (i * 60) + 'ms"></i></div><span class="n">' + sl[1] + " of " + N + "</span></div>"; });
+    var ab = document.getElementById("ana-box"); ab.innerHTML = h + "</div></div>";
+
+    function play() {
+      ab.querySelectorAll(".bar i").forEach(function (i) { i.style.width = Math.max(+i.getAttribute("data-w"), 1) + "%"; });
+      if (calm2) return;
+      var t0 = null, dur = 700;
+      function step(ts) {
+        if (!t0) t0 = ts + 0; var p = Math.min(1, (ts - t0) / dur), e = 1 - Math.pow(1 - p, 4);
+        ab.querySelectorAll(".stat b").forEach(function (b, i) { var d = i * 60, q = Math.max(0, Math.min(1, (ts - t0 - d) / dur)), ee = 1 - Math.pow(1 - q, 4); b.textContent = tiles[i].f(tiles[i].v * ee); });
+        if (ts - t0 < dur + 6 * 60) requestAnimationFrame(step); else ab.querySelectorAll(".stat b").forEach(function (b, i) { b.textContent = tiles[i].f(tiles[i].v); });
+      }
+      ab.querySelectorAll(".stat b").forEach(function (b, i) { b.textContent = tiles[i].f(0); });
+      requestAnimationFrame(step);
+    }
+    if (calm2) { ab.querySelectorAll(".bar i").forEach(function (i) { i.style.transition = "none"; }); play(); }
+    else if ("IntersectionObserver" in window) { var aio = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { aio.disconnect(); play(); } }, { threshold: .3 }); aio.observe(ab); }
+    else play();
+  });
 
   // feedback by email: the same idea as "Email teacher" in the game
   var FB_TO = "g-ipgp22212562@moe-dl.edu.my";
