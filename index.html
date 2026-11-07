@@ -42,6 +42,7 @@
   /* ---- shared section grammar: a band, a heading, one sentence, the content ---- */
   .band { padding-block:var(--sec); }
   .band.sun { background:var(--sun); }
+  .band h2.claim { font-size:var(--t-h3); line-height:1.05; letter-spacing:-.03em; }
   .band.soft { background:var(--sun-soft); }
   .band.note { background:var(--note); }
   .head { display:grid; grid-template-columns:7fr 5fr; gap:var(--s3) var(--s4); align-items:end; margin-bottom:var(--s4); }
@@ -101,48 +102,65 @@
   .tries button { min-height:2.75rem; padding:0 1.25rem; border:0; border-radius:999px; background:var(--note); color:var(--ink); font:700 var(--t-small)/1 "Andika",sans-serif; cursor:pointer; transition:background-color .2s, transform .2s var(--ease); }
   .tries button:hover { background:var(--sun); transform:translateY(-2px); }
 
-  /* ---- play ---- */
-  .play iframe { display:block; width:100%; height:min(82vh,48rem); min-height:34rem; border:0; background:var(--ground); }
-  .play-links { display:flex; gap:var(--s1) var(--s3); flex-wrap:wrap; margin-top:var(--s2); font-weight:700; }
+  /* ---- play: the real game in a window, on a dark stage ---- */
+  .stage { background:var(--ink); color:var(--on-dark); }
+  .window { background:var(--ground); border-radius:14px; overflow:hidden; color:var(--ink); }
+  .window-bar { display:flex; align-items:center; gap:.5rem; padding:.7rem 1rem; background:#2E4054; color:var(--on-dark); font-size:var(--t-small); }
+  .window-bar i { width:.8rem; height:.8rem; border-radius:50%; flex:none; }
+  .window-bar i:nth-child(1) { background:var(--coral); }
+  .window-bar i:nth-child(2) { background:var(--sun); }
+  .window-bar i:nth-child(3) { background:#12B5A0; }
+  .window-bar span { margin-left:.75rem; }
+  .stage iframe { display:block; width:100%; height:min(80vh,44rem); min-height:30rem; border:0; background:var(--ground); }
+  .stage .links { display:flex; gap:var(--s1) var(--s3); flex-wrap:wrap; margin-top:var(--s2); font-weight:700; }
+  .stage .links a { color:var(--sun); }
 
-  /* ---- teachers ---- */
-  .teach { display:grid; grid-template-columns:5fr 6fr; gap:var(--s4) var(--s5); align-items:start; }
+  /* ---- classroom ---- */
+  .teach { display:grid; grid-template-columns:5fr 7fr; gap:var(--s4) var(--s5); align-items:center; }
   .teach-l .intro { margin-top:var(--s3); }
-  .teach-r img { width:100%; height:auto; background:var(--ink); }
-  .dl { list-style:none; margin:var(--s1) 0 0; padding:0; display:grid; gap:var(--s1); }
-  .dl a { display:flex; justify-content:space-between; gap:var(--s2); align-items:baseline; padding:var(--s2) var(--s3); background:var(--note); text-decoration:none; font-weight:700; transition:background-color .2s, transform .2s var(--ease); }
-  .dl a span { font-weight:400; }
-  .dl a:hover { background:var(--sun); transform:translateX(6px); }
+  .teach-r .window { background:#fff; border:2px solid var(--ink); }
+  .teach-r img { display:block; width:100%; height:auto; }
+  .kit { margin-top:var(--s4); display:grid; gap:var(--s3); justify-items:start; }
+  .kit ul { list-style:none; margin:0; padding:0; display:grid; gap:var(--s1); }
+  .kit li a { font-weight:700; }
+
+  /* ---- guides: one reader, two PDFs ---- */
+  .seg { display:inline-flex; gap:.25rem; background:rgba(29,43,58,.12); padding:.25rem; border-radius:999px; margin-bottom:var(--s3); }
+  .seg button { border:0; background:transparent; color:var(--ink); font:700 var(--t-body)/1 "Andika",sans-serif; padding:.85rem 1.4rem; border-radius:999px; cursor:pointer; transition:background-color .2s, color .2s, transform 120ms var(--ease); }
+  .seg button[aria-selected="true"] { background:var(--ink); color:var(--on-dark); }
+  .seg button:active { transform:scale(.97); }
+  .reader { background:var(--ground); border-radius:14px; overflow:hidden; }
+  .reader-bar { display:flex; align-items:center; gap:var(--s2); flex-wrap:wrap; padding:var(--s2) var(--s3); background:var(--ink); color:var(--on-dark); }
+  .reader-bar b { font-size:var(--t-lead); font-weight:800; margin-right:auto; }
+  .reader-bar .pager { display:flex; align-items:center; gap:var(--s1); }
+  .reader-bar button, .reader-bar a { border:0; background:var(--on-dark); color:var(--ink); padding:.6rem 1rem; border-radius:999px; font:700 var(--t-small)/1 "Andika",sans-serif; text-decoration:none; cursor:pointer; transition:transform 120ms var(--ease), background-color .2s; }
+  .reader-bar button:hover, .reader-bar a:hover { background:var(--sun); }
+  .reader-bar button:active, .reader-bar a:active { transform:scale(.97); }
+  .reader-bar button:disabled { opacity:.4; cursor:default; }
+  .reader.soon .reader-bar .pager, .reader.soon .reader-bar .rd-links { display:none; }
+  .reader-stage { padding:var(--s3); display:grid; justify-items:center; min-height:20rem; max-height:min(82vh,52rem); overflow:auto; background:#E9E2CD; }
+  .reader canvas { max-width:100%; height:auto; background:#fff; }
+  .reader-note { padding:var(--s4); text-align:center; font-size:var(--t-lead); align-self:center; }
+  .rd-links { display:flex; gap:var(--s1); }
+
+  /* ---- verdict: the teacher's words, large, on dark ---- */
+  .verdict { background:var(--ink); color:var(--on-dark); }
+  .verdict .wrap { position:relative; }
+  .verdict .qmark { position:absolute; left:calc(var(--m) - .5rem); top:-.15em; font-size:clamp(10rem,24vw,22rem); line-height:1; font-weight:800; color:var(--sun); opacity:.2; pointer-events:none; user-select:none; }
+  .verdict blockquote { margin:0; position:relative; display:grid; grid-template-columns:7fr 5fr; gap:var(--s3) var(--s5); align-items:end; }
+  .verdict .lead-q { font-size:var(--t-h2); font-weight:800; line-height:1.02; letter-spacing:-.035em; }
+  .verdict .rest { margin:0; font-size:var(--t-lead); line-height:1.55; }
+  .verdict figcaption { margin-top:var(--s4); font-size:var(--t-lead); position:relative; }
+  .verdict figcaption strong { color:var(--sun); font-weight:800; }
+  .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
 
   /* ---- placeholders ---- */
   .ph { background:var(--note); padding:var(--s3); }
   .ph b { display:block; margin-bottom:var(--s1); }
   .ph p + p { margin-top:var(--s1); }
-  .note .ph { background:var(--ground); }
-  .gtabs { display:grid; grid-template-columns:1fr 1fr; gap:var(--s1); margin-bottom:var(--s2); }
-  .gtab { display:block; width:100%; text-align:left; padding:var(--s3); border:0; background:var(--ground); color:var(--ink); font:inherit; cursor:pointer; transition:background-color .25s, color .25s; }
-  .gtab b { display:block; font-size:var(--t-lead); font-weight:800; }
-  .gtab span { display:block; margin-top:.25rem; }
-  .gtab[aria-selected="true"] { background:var(--ink); color:var(--on-dark); }
-  .gtab[aria-selected="false"]:hover { background:var(--sun); }
-  .gpanel[hidden] { display:none; }
-  .gbar { display:none; justify-content:space-between; align-items:center; gap:var(--s2); flex-wrap:wrap; margin-bottom:var(--s2); }
-  .gpanel.has-pdf .gbar { display:flex; }
-  .gbar p { font-size:var(--t-lead); font-weight:800; }
-  .gbtns { display:flex; gap:var(--s1); flex-wrap:wrap; }
-  .btn.alt { background:var(--ground); }
-  .btn.alt:hover { background:var(--sun); }
-  .gpanel object { display:none; width:100%; background:var(--ground); }
-  .gpanel.has-pdf object { display:block; height:min(82vh,48rem); min-height:30rem; }
-  .gpanel .ph { background:var(--ground); }
-  .gpanel.has-pdf .ph { display:none; }
-  .quote { position:relative; margin:0; background:var(--sun); padding:clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,4rem) clamp(2rem,5vw,3rem); }
-  .quote .qmark { position:absolute; left:clamp(1rem,3vw,2.5rem); top:-.1em; font-size:clamp(7rem,14vw,12rem); line-height:1; font-weight:800; color:var(--ink); }
-  .quote blockquote { margin:clamp(2.5rem,6vw,4rem) 0 0; max-width:50rem; }
-  .quote blockquote p { font-size:var(--t-lead); line-height:1.55; }
-  .quote blockquote strong { font-weight:800; font-size:var(--t-h3); line-height:1.1; letter-spacing:-.02em; display:block; margin-bottom:var(--s2); }
-  .quote figcaption { margin-top:var(--s3); font-size:var(--t-lead); }
-  .fb-results, .fb-analysis { margin-top:var(--sec); }
+  .head .intro.solo { grid-column:auto; }
+  .fb-results, .fb-analysis { margin-top:var(--s5); }
+  .fb-analysis { margin-top:0; }
   .fb-results h3, .fb-analysis h3 { font-size:var(--t-h3); line-height:1.05; letter-spacing:-.03em; font-weight:800; }
   .fb-note { margin:var(--s1) 0 var(--s3); max-width:46rem; }
   .story { margin-top:var(--s1); background:var(--note); }
@@ -178,15 +196,19 @@
   .slip .bar { height:1.1rem; background:var(--ground); }
   .slip .bar i { display:block; height:100%; background:var(--coral); width:0; transition:width 700ms var(--ease); }
   .slip .n { text-align:right; font-weight:700; }
-  .fb-cta { margin-top:var(--sec); background:var(--ink); color:var(--on-dark); padding:clamp(1.5rem,4vw,3rem); display:grid; grid-template-columns:5fr 7fr; gap:var(--s4); align-items:start; }
-  .fb-cta h3 { font-size:var(--t-h3); line-height:1.05; letter-spacing:-.03em; font-weight:800; }
-  .fb-cta-text p { margin-top:var(--s2); font-size:var(--t-lead); line-height:1.5; }
+  .band.coral { background:var(--coral); }
+  .fb-cta { display:grid; grid-template-columns:5fr 7fr; gap:var(--s4); align-items:start; }
+  .coral .btn { background:var(--ink); color:var(--on-dark); }
+  .coral .btn:hover { background:var(--ground); color:var(--ink); }
+  .coral .btn.alt { background:var(--ground); color:var(--ink); }
+  .coral .btn.alt:hover { background:var(--sun); }
+  .fb-cta-text p { font-size:var(--t-lead); line-height:1.5; max-width:26rem; }
   .fb-form { display:grid; grid-template-columns:1fr 1fr; gap:var(--s2); }
   .fb-form label { display:grid; gap:.35rem; font-weight:700; }
   .fb-form label.wide { grid-column:1 / -1; }
   .fb-form input, .fb-form select, .fb-form textarea { width:100%; border:0; border-radius:0; padding:.8rem 1rem; background:var(--ground); color:var(--ink); font:400 var(--t-body)/1.4 "Andika",sans-serif; }
   .fb-form textarea { resize:vertical; }
-  .fb-form input:focus-visible, .fb-form select:focus-visible, .fb-form textarea:focus-visible { outline:3px solid var(--sun); outline-offset:2px; }
+  .fb-form input:focus-visible, .fb-form select:focus-visible, .fb-form textarea:focus-visible { outline:3px solid var(--ink); outline-offset:2px; }
   .fb-actions { grid-column:1 / -1; display:flex; gap:var(--s1); flex-wrap:wrap; margin-top:var(--s1); }
   .two { display:grid; grid-template-columns:1fr 1fr; gap:var(--s2); }
   .form-embed iframe { display:block; width:100%; height:42rem; border:0; background:var(--ground); }
@@ -206,7 +228,7 @@
     .hero .wrap { grid-template-columns:1fr; }
     h1, .hero-side { grid-column:1; }
     .slot { width:1.8em; }
-    .head, .how, .teach, .two, .gtabs, .fb-cta, .ana, .close .notes { grid-template-columns:1fr; }
+    .head, .how, .teach, .two, .fb-cta, .ana, .close .notes, .verdict blockquote { grid-template-columns:1fr; }
     .fb-form { grid-template-columns:1fr; }
     .slip { grid-template-columns:1fr 6rem; }
     .slip .bar { grid-column:1 / -1; grid-row:2; }
@@ -243,6 +265,7 @@
       <a href="#play">Play</a>
       <a href="#teachers">Teachers</a>
       <a href="#guide">User guide</a>
+      <a href="#results">Results</a>
       <a href="#feedback">Feedback</a>
     </nav>
   </div>
@@ -305,90 +328,102 @@
     </div>
   </section>
 
-  <section class="band soft play" id="play" aria-labelledby="play-h">
+  <section class="band stage" id="play" aria-labelledby="play-h">
     <div class="wrap">
       <div class="head">
-        <h2 id="play-h" class="reveal">Play it now.</h2>
-        <p class="intro reveal" style="--d:80ms">Type a nickname, press Start, and begin with Easy. The story is "A Day at Sea".</p>
+        <h2 id="play-h" class="claim reveal">Try a real question, right now.</h2>
+        <p class="intro reveal" style="--d:80ms">Pick a key word, search the story, choose an answer. That is the whole game.</p>
       </div>
-      <iframe class="reveal" style="--d:120ms" src="app/play-quick.html" title="Word Hunt game" allow="autoplay"></iframe>
-      <p class="play-links"><a href="app/play-quick.html">Open the game full screen</a><a href="app/play-all.html">Play all three stories</a></p>
+      <div class="window reveal" style="--d:120ms">
+        <div class="window-bar"><i></i><i></i><i></i><span>Word Hunt: A Day at Sea</span></div>
+        <iframe src="app/play-quick.html?demo=1" title="Word Hunt game" allow="autoplay"></iframe>
+      </div>
+      <p class="links"><a href="app/play-quick.html">Open the game full screen</a><a href="app/play-all.html">Play all three stories</a></p>
     </div>
   </section>
 
   <section class="band" id="teachers" aria-labelledby="t-h">
     <div class="wrap teach">
       <div class="teach-l">
-        <h2 id="t-h" class="reveal">Made for the classroom.</h2>
-        <p class="intro reveal" style="--d:80ms">Teachers bring their own stories. Make one in any AI chat, drop the file on the start page, and the game checks it.</p>
-        <p class="intro reveal" style="--d:140ms;margin-top:1rem">The Teacher panel then shows every pair's results and the mistakes the class makes most.</p>
+        <h2 id="t-h" class="claim reveal">Your stories. Your results.</h2>
+        <p class="intro reveal" style="--d:80ms">Make a story in any AI chat and drop the file on the start page. The game checks it for you. Then the Teacher panel shows each pair's results and the mistakes the class makes most.</p>
+        <div class="kit reveal" style="--d:140ms">
+          <a class="btn" href="app/Wordhunt.html" download>Download the game</a>
+          <ul>
+            <li><a href="stories/Wildlife_story_1_A_Day_at_Sea.json" download>Story 1: A Day at Sea</a></li>
+            <li><a href="stories/Wildlife_story_2_Safari_Park_Visit.json" download>Story 2: Safari Park Visit</a></li>
+            <li><a href="stories/Wildlife_story_3_Small_and_Strong.json" download>Story 3: Small and Strong</a></li>
+            <li><a href="stories/Wild_life_stories.json" download>All three stories together</a></li>
+          </ul>
+        </div>
       </div>
       <div class="teach-r reveal" style="--d:120ms">
-        <img src="assets/shot-teacher.jpg" alt="The Teacher panel lists each pair with story, level, marks, time and searches." width="711" height="145">
-        <ul class="dl">
-          <li><a href="app/Wordhunt.html" download>The game <span>Wordhunt.html</span></a></li>
-          <li><a href="stories/Wildlife_story_1_A_Day_at_Sea.json" download>Story 1: A Day at Sea <span>Download</span></a></li>
-          <li><a href="stories/Wildlife_story_2_Safari_Park_Visit.json" download>Story 2: Safari Park Visit <span>Download</span></a></li>
-          <li><a href="stories/Wildlife_story_3_Small_and_Strong.json" download>Story 3: Small and Strong <span>Download</span></a></li>
-          <li><a href="stories/Wild_life_stories.json" download>All three stories <span>Download</span></a></li>
-        </ul>
+        <div class="window">
+          <div class="window-bar"><i></i><i></i><i></i><span>Teacher panel</span></div>
+          <img src="assets/shot-teacher-panel.jpg" alt="The Teacher panel lists the mistakes the class made, with a hint for what to teach next." width="1100" height="658">
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="band note guide" id="guide" aria-labelledby="g-h">
+  <section class="band sun" id="guide" aria-labelledby="g-h">
     <div class="wrap">
       <div class="head">
-        <h2 id="g-h" class="reveal">Two user guides.</h2>
-        <p class="intro reveal" style="--d:80ms">One for the teacher who runs the lesson, one for the pupils who play.</p>
+        <h2 id="g-h" class="claim reveal">Everything you need to start.</h2>
+        <p class="intro reveal" style="--d:80ms">One guide for the teacher who runs the lesson, one for the pupils who play.</p>
       </div>
-      <div class="gtabs" role="tablist" aria-label="Choose a guide">
-        <button class="gtab" role="tab" id="gt0" aria-selected="true" aria-controls="gp0" type="button"><b>Teacher guide</b><span>Set up, run and read the results</span></button>
-        <button class="gtab" role="tab" id="gt1" aria-selected="false" aria-controls="gp1" type="button"><b>Student guide</b><span>How to play, step by step</span></button>
+      <div class="seg reveal" role="tablist" aria-label="Choose a guide" style="--d:100ms">
+        <button type="button" role="tab" aria-selected="true">Teacher guide</button>
+        <button type="button" role="tab" aria-selected="false">Student guide</button>
       </div>
-      <div class="gpanel" id="gp0" role="tabpanel" aria-labelledby="gt0" data-pdf="guide/Word-Hunt-Teacher-Guide.pdf">
-        <div class="gbar"><p>Teacher guide</p><div class="gbtns"><a class="btn" href="guide/Word-Hunt-Teacher-Guide.pdf" target="_blank" rel="noopener">Open the guide</a><a class="btn alt" href="guide/Word-Hunt-Teacher-Guide.pdf" download>Download PDF</a></div></div>
-        <object data="guide/Word-Hunt-Teacher-Guide.pdf" type="application/pdf" aria-label="Teacher guide"></object>
-        <div class="ph"><b>Coming soon</b><p>The teacher guide will be added here. You will be able to read it on this page or download it.</p></div>
-      </div>
-      <div class="gpanel" id="gp1" role="tabpanel" aria-labelledby="gt1" data-pdf="guide/Word-Hunt-Student-Guide.pdf" hidden>
-        <div class="gbar"><p>Student guide</p><div class="gbtns"><a class="btn" href="guide/Word-Hunt-Student-Guide.pdf" target="_blank" rel="noopener">Open the guide</a><a class="btn alt" href="guide/Word-Hunt-Student-Guide.pdf" download>Download PDF</a></div></div>
-        <object data="guide/Word-Hunt-Student-Guide.pdf" type="application/pdf" aria-label="Student guide"></object>
-        <div class="ph"><b>Coming soon</b><p>The student guide will be added here. You will be able to read it on this page or download it.</p></div>
+      <div class="reader reveal" id="reader" style="--d:120ms">
+        <div class="reader-bar">
+          <b id="rd-title">Teacher guide</b>
+          <div class="pager"><button type="button" id="rd-prev" aria-label="Previous page">Back</button><span id="rd-page">Page 1</span><button type="button" id="rd-next" aria-label="Next page">Next</button></div>
+          <div class="rd-links"><a id="rd-open" href="#" target="_blank" rel="noopener">Open</a><a id="rd-dl" href="#" download>Download PDF</a></div>
+        </div>
+        <div class="reader-stage" id="rd-stage"><p class="reader-note">Loading the guide.</p></div>
       </div>
     </div>
   </section>
 
-  <section class="band" id="feedback" aria-labelledby="f-h">
+  <section class="band verdict" id="verdict" aria-labelledby="v-h">
     <div class="wrap">
-      <div class="head">
-        <h2 id="f-h" class="reveal">What testers said.</h2>
-        <p class="intro reveal" style="--d:80ms"></p>
-      </div>
-
-      <figure class="quote reveal">
-        <span class="qmark" aria-hidden="true">&ldquo;</span>
+      <h2 id="v-h" class="sr">A teacher's verdict</h2>
+      <span class="qmark" aria-hidden="true">&ldquo;</span>
+      <figure style="margin:0" class="reveal">
         <blockquote>
-          <p><strong>My students love it.</strong> I also like the colour design of yellow and cream; it looks neat. I think it is easy to use because it also has a feature where I can generate stories, so I don't need to spend time creating them. The questions that come with the stories are also good and have good distractors.</p>
+          <p class="lead-q">My students love it.</p>
+          <p class="rest">I also like the colour design of yellow and cream; it looks neat. I think it is easy to use because it also has a feature where I can generate stories, so I don't need to spend time creating them. The questions that come with the stories are also good and have good distractors.</p>
         </blockquote>
         <figcaption><strong>Adib Nifail</strong>, SJKC La Salle</figcaption>
       </figure>
+    </div>
+  </section>
 
+  <section class="band" id="results" aria-labelledby="r-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="r-h" class="claim reveal">Every pair, every question, measured.</h2>
+        <p class="intro reveal" style="--d:80ms">We tried Word Hunt with a class. Here are the results of our run.</p>
+      </div>
+      <div class="fb-analysis reveal" id="fb-analysis">
+        <div id="ana-box"><div class="ph"><b>Loading</b><p>The analysis will appear here.</p></div></div>
+      </div>
       <div class="fb-results reveal" id="fb-results">
-        <h3>We tried Word Hunt with a class. Here are the results of our run.</h3>
+        <h3>Story by story</h3>
         <p class="fb-note">For privacy, names are shortened to the first three letters.</p>
         <div id="res-box"><div class="ph"><b>Loading</b><p>The results will appear here.</p></div></div>
       </div>
+    </div>
+  </section>
 
-      <div class="fb-analysis reveal" id="fb-analysis">
-        <h3>How the pairs did</h3>
-        <div id="ana-box"><div class="ph"><b>Loading</b><p>The analysis will appear here.</p></div></div>
-      </div>
-
+  <section class="band coral" id="feedback" aria-labelledby="f-h">
+    <div class="wrap">
       <div class="fb-cta reveal" id="fbcta">
         <div class="fb-cta-text">
-          <h3>Tell us what you think.</h3>
-          <p>Tried Word Hunt? Your message goes straight to our inbox. It takes one minute.</p>
+          <h2 id="f-h" class="claim">Tell us what you think.</h2>
+          <p style="margin-top:1rem">Tried Word Hunt? Your message goes straight to our inbox. It takes one minute.</p>
         </div>
         <form class="fb-form" id="fbform" onsubmit="return false">
           <label>Your name (optional)<input id="fb-name" type="text" autocomplete="name"></label>
@@ -421,13 +456,49 @@
 
 <script>
 (function () {
-  // guides: two tabs; the PDF viewer appears only when the file is really there
-  var gtabs = document.querySelectorAll(".gtab"), gpanels = document.querySelectorAll(".gpanel");
-  gtabs.forEach(function (t, k) {
-    t.addEventListener("click", function () { gtabs.forEach(function (x, j) { x.setAttribute("aria-selected", j === k); gpanels[j].hidden = j !== k; }); });
-    t.addEventListener("keydown", function (e) { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { var n = (k + 1) % 2; gtabs[n].click(); gtabs[n].focus(); } });
-  });
-  gpanels.forEach(function (p) { if (window.fetch) fetch(p.getAttribute("data-pdf"), { method: "HEAD" }).then(function (r) { if (r.ok) p.classList.add("has-pdf"); }).catch(function () {}); });
+  // guides: one reader, two PDFs, drawn page by page with PDF.js
+  var GUIDES = [{ name: "Teacher guide", url: "guide/Word-Hunt-Teacher-Guide.pdf" }, { name: "Student guide", url: "guide/Word-Hunt-Student-Guide.pdf" }];
+  var rd = { i: 0, doc: null, page: 1, token: 0 }, libP = null;
+  var rEl = document.getElementById("reader"), rStage = document.getElementById("rd-stage"), rPage = document.getElementById("rd-page"), rPrev = document.getElementById("rd-prev"), rNext = document.getElementById("rd-next");
+  function loadLib() {
+    if (libP) return libP;
+    libP = new Promise(function (ok, bad) {
+      var sc = document.createElement("script"); sc.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+      sc.onload = function () { window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"; ok(); };
+      sc.onerror = bad; document.head.appendChild(sc);
+    });
+    return libP;
+  }
+  function note(t, soon) { rEl.classList.toggle("soon", !!soon); rStage.innerHTML = '<p class="reader-note">' + t + "</p>"; }
+  function drawPage() {
+    var tok = ++rd.token;
+    rd.doc.getPage(rd.page).then(function (pg) {
+      if (tok !== rd.token) return;
+      var v1 = pg.getViewport({ scale: 1 }), w = Math.min(rStage.clientWidth - 32, 860), dpr = window.devicePixelRatio || 1, k = w / v1.width, v = pg.getViewport({ scale: k * dpr });
+      var cv = document.createElement("canvas"); cv.width = v.width; cv.height = v.height; cv.style.width = (v.width / dpr) + "px"; cv.style.height = (v.height / dpr) + "px";
+      pg.render({ canvasContext: cv.getContext("2d"), viewport: v }).promise.then(function () { if (tok !== rd.token) return; rStage.innerHTML = ""; rStage.appendChild(cv); rStage.scrollTop = 0; });
+    });
+    rPage.textContent = "Page " + rd.page + " of " + rd.doc.numPages; rPrev.disabled = rd.page <= 1; rNext.disabled = rd.page >= rd.doc.numPages;
+  }
+  function openGuide(i) {
+    rd.i = i; rd.page = 1; rd.doc = null; var g = GUIDES[i];
+    document.getElementById("rd-title").textContent = g.name; document.getElementById("rd-open").href = g.url; document.getElementById("rd-dl").href = g.url;
+    document.querySelectorAll(".seg button").forEach(function (b, k) { b.setAttribute("aria-selected", k === i); });
+    note("Loading the guide.", false);
+    fetch(g.url, { method: "HEAD" }).then(function (r) { if (!r.ok) throw 0; return loadLib(); }).then(function () { return window.pdfjsLib.getDocument(g.url).promise; }).then(function (doc) {
+      if (rd.i !== i) return; rd.doc = doc; drawPage();
+    }).catch(function () {
+      fetch(g.url, { method: "HEAD" }).then(function (r) {
+        if (rd.i !== i) return;
+        if (r.ok) { rEl.classList.remove("soon"); rStage.innerHTML = '<object data="' + g.url + '#toolbar=0&navpanes=0&view=FitH" type="application/pdf" style="width:100%;height:min(80vh,48rem)"><p class="reader-note"><a href="' + g.url + '">Open the guide</a></p></object>'; }
+        else note("The " + g.name.toLowerCase() + " will be added here soon.", true);
+      }).catch(function () { note("The " + g.name.toLowerCase() + " will be added here soon.", true); });
+    });
+  }
+  document.querySelectorAll(".seg button").forEach(function (b, k) { b.addEventListener("click", function () { openGuide(k); }); });
+  rPrev.addEventListener("click", function () { if (rd.doc && rd.page > 1) { rd.page--; drawPage(); } });
+  rNext.addEventListener("click", function () { if (rd.doc && rd.page < rd.doc.numPages) { rd.page++; drawPage(); } });
+  if ("IntersectionObserver" in window) { var gio = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { gio.disconnect(); openGuide(0); } }, { rootMargin: "300px" }); gio.observe(rEl); } else openGuide(0);
 
   // feedback: the class results load from the files in the "feedback" folder
   function parseCSV(t) {

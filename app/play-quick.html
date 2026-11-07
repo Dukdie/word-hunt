@@ -3092,5 +3092,23 @@ $("pupilInput").addEventListener("input", () => { try { localStorage.setItem("wo
 loadPrefs();
 try { const raw = $("lessonData").textContent.trim(); if (raw) { const list = JSON.parse(raw); if (Array.isArray(list) && list.length) startSet(list); } } catch (e) {}
 </script>
+<!-- showcase demo start -->
+<script>
+/* Showcase only: with ?demo=1 the game opens straight on the first question, so a visitor sees the real thing at once. */
+(function () {
+  if (!/[?&]demo=1/.test(location.search)) return;
+  function go() {
+    var $ = function (id) { return document.getElementById(id); };
+    try {
+      $("pupilInput").value = "Guest"; $("pupilInput").dispatchEvent(new Event("input", { bubbles: true })); $("startBtn").click();
+      setTimeout(function () {
+        if (!$("howScreen").classList.contains("hidden")) $("howGo").click();
+        setTimeout(function () { var e = document.querySelector(".level-card.easy"); if (e) e.click(); }, 250);
+      }, 250);
+    } catch (e) {}
+  }
+  setTimeout(go, 400);
+})();
+</script>
 </body>
 </html>
