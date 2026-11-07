@@ -62,8 +62,8 @@
   .js .slot { animation:shutter 1.1s .3s var(--ease) forwards; }
   html:not(.js) .slot { clip-path:none; }
   @keyframes shutter { to { clip-path:inset(0 0 0 0); } }
-  .slot img { position:absolute; left:0; top:0; width:230%; max-width:none; height:auto; animation:pan 14s ease-in-out infinite alternate; }
-  @keyframes pan { from { transform:translate(-3%,-8%); } to { transform:translate(-38%,-34%); } }
+  .slot img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transform-origin:30% 45%; animation:pan 12s ease-in-out infinite alternate; }
+  @keyframes pan { from { transform:scale(1.02); } to { transform:scale(1.28) translate(-3%,2%); } }
   .key { position:relative; display:inline-block; z-index:0; }
   .key::before { content:""; position:absolute; inset:.52em -.04em .02em; background:var(--sun); z-index:-1; transform-origin:0 50%; transform:scaleX(0); animation:swipe .9s .8s var(--ease) forwards; }
   html:not(.js) .key::before { transform:none; }
@@ -71,19 +71,22 @@
   .hero-side { grid-column:9 / span 4; display:grid; gap:var(--s3); justify-items:start; }
   .hero-side p { font-size:var(--t-lead); line-height:1.5; }
 
-  /* ---- how it works: one slider drives the clause, the picture and the note ---- */
-  .how { display:grid; grid-template-columns:1fr 1fr; gap:var(--s4); align-items:stretch; }
-  .how-l { display:flex; flex-direction:column; gap:var(--s3); justify-content:space-between; }
-  .how-l h3 { font-size:var(--t-h3); line-height:1.05; letter-spacing:-.03em; font-weight:800; min-height:2.1em; transition:opacity .2s; }
-  .how-note { font-size:var(--t-lead); line-height:1.5; max-width:28rem; }
-  .how-ctl input[type=range] { width:100%; height:2rem; margin:0; accent-color:var(--ink); background:transparent; cursor:pointer; }
-  .how-names { display:flex; justify-content:space-between; margin-top:var(--s1); font-weight:700; }
-  .how-names span { opacity:.55; transition:opacity .2s; }
-  .how-names span.on { opacity:1; }
-  .how-r { background:var(--ink); padding:var(--s3); display:grid; place-items:center; }
-  .how-r .stack { position:relative; width:100%; aspect-ratio:765/450; }
-  .how-r img { position:absolute; inset:0; width:100%; height:100%; opacity:0; transition:opacity .25s; }
-  .how-r img.on { opacity:1; }
+  /* ---- how it works: three steps you press, one picture that follows ---- */
+  .how { display:grid; grid-template-columns:5fr 7fr; gap:var(--s4); align-items:start; }
+  .steps { display:grid; gap:var(--s1); }
+  .step { display:grid; grid-template-columns:3rem 1fr; gap:var(--s2); align-items:center; width:100%; text-align:left; padding:var(--s3); border:0; border-radius:0; background:var(--ground); color:var(--ink); font:inherit; cursor:pointer; position:relative; overflow:hidden; transition:background-color .25s, color .25s, transform .25s var(--ease); }
+  .step:hover { transform:translateX(6px); }
+  .step .n { display:grid; place-items:center; width:3rem; height:3rem; border-radius:50%; background:var(--sun); color:var(--ink); font-weight:800; font-size:var(--t-lead); }
+  .step b { display:block; font-size:var(--t-lead); line-height:1.25; font-weight:800; }
+  .step-note { margin-top:var(--s2); font-size:var(--t-lead); line-height:1.5; max-width:28rem; }
+  .step[aria-selected="true"] { background:var(--ink); color:var(--on-dark); }
+  .step .bar { position:absolute; left:0; bottom:0; height:.3rem; width:100%; background:var(--coral); transform:scaleX(0); transform-origin:0 50%; }
+  .step[aria-selected="true"].auto .bar { animation:fill 6s linear forwards; }
+  @keyframes fill { to { transform:scaleX(1); } }
+  .shot { background:var(--ground); padding:var(--s2); }
+  .shot .stack { position:relative; aspect-ratio:1200/584; }
+  .shot img { position:absolute; inset:0; width:100%; height:100%; opacity:0; transition:opacity .35s; }
+  .shot img.on { opacity:1; }
 
   /* ---- the headline you can type ---- */
   .typebox-wrap { position:relative; }
@@ -116,8 +119,22 @@
   .ph b { display:block; margin-bottom:var(--s1); }
   .ph p + p { margin-top:var(--s1); }
   .note .ph { background:var(--ground); }
-  .guide object { display:block; width:100%; background:var(--ground); }
-  .guide.has-pdf object { height:min(82vh,48rem); min-height:30rem; }
+  .gtabs { display:grid; grid-template-columns:1fr 1fr; gap:var(--s1); margin-bottom:var(--s2); }
+  .gtab { display:block; width:100%; text-align:left; padding:var(--s3); border:0; background:var(--ground); color:var(--ink); font:inherit; cursor:pointer; transition:background-color .25s, color .25s; }
+  .gtab b { display:block; font-size:var(--t-lead); font-weight:800; }
+  .gtab span { display:block; margin-top:.25rem; }
+  .gtab[aria-selected="true"] { background:var(--ink); color:var(--on-dark); }
+  .gtab[aria-selected="false"]:hover { background:var(--sun); }
+  .gpanel[hidden] { display:none; }
+  .gbar { display:flex; justify-content:space-between; align-items:center; gap:var(--s2); flex-wrap:wrap; margin-bottom:var(--s2); }
+  .gbar p { font-size:var(--t-lead); font-weight:800; }
+  .gbtns { display:flex; gap:var(--s1); flex-wrap:wrap; }
+  .btn.alt { background:var(--ground); }
+  .btn.alt:hover { background:var(--sun); }
+  .gpanel object { display:none; width:100%; background:var(--ground); }
+  .gpanel.has-pdf object { display:block; height:min(82vh,48rem); min-height:30rem; }
+  .gpanel .ph { background:var(--ground); }
+  .gpanel.has-pdf .ph { display:none; }
   .two { display:grid; grid-template-columns:1fr 1fr; gap:var(--s2); }
   .form-embed iframe { display:block; width:100%; height:42rem; border:0; background:var(--ground); }
 
@@ -134,9 +151,8 @@
     .hero .wrap { grid-template-columns:1fr; }
     h1, .hero-side { grid-column:1; }
     .slot { width:1.8em; }
-    .head, .how, .teach, .two, .close .notes { grid-template-columns:1fr; }
+    .head, .how, .teach, .two, .gtabs, .close .notes { grid-template-columns:1fr; }
     .head { align-items:start; }
-    .how-r { order:-1; }
     .close .back { justify-self:start; }
   }
   @media (max-width:560px) {
@@ -176,7 +192,7 @@
     <div class="wrap">
       <h1 aria-label="Hunt for the key word.">
         <span class="line">Hunt for the</span>
-        <span class="line"><span class="slot" aria-hidden="true"><img src="assets/shot-search.jpg" alt="" width="765" height="450"></span><span class="key">key word.</span></span>
+        <span class="line"><span class="slot" aria-hidden="true"><img src="assets/slot.jpg" alt="" width="836" height="310"></span><span class="key">key word.</span></span>
       </h1>
       <div class="hero-side">
         <p>A free reading game for pupils aged 10 to 12. Read the question, search the story, choose the answer.</p>
@@ -189,22 +205,20 @@
     <div class="wrap">
       <div class="head">
         <h2 id="how-h" class="reveal">Three moves for every question.</h2>
-        <p class="intro reveal" style="--d:80ms">Pupils learn to scan for the one word that matters, instead of reading everything twice.</p>
+        <p class="intro reveal" style="--d:80ms">Press a step to see it in the game.</p>
       </div>
       <div class="how reveal" style="--d:120ms">
-        <div class="how-l">
-          <h3 id="how-clause" aria-live="polite">First, pick a key word.</h3>
-          <p class="how-note" id="how-p">A key word is a name or a thing in the question, such as "hat" or "Zara".</p>
-          <div class="how-ctl">
-            <input id="how-range" type="range" min="0" max="2" step="1" value="0" aria-label="Choose a step" aria-valuetext="Step 1: pick a key word">
-            <div class="how-names" id="how-names"><span class="on">Pick</span><span>Search</span><span>Choose</span></div>
-          </div>
+        <div class="steps" role="tablist" aria-label="The three moves">
+          <button class="step" role="tab" id="st0" aria-selected="true" aria-controls="shot" type="button"><span class="n">1</span><b>Pick a key word</b><i class="bar"></i></button>
+          <button class="step" role="tab" id="st1" aria-selected="false" aria-controls="shot" type="button"><span class="n">2</span><b>Search the story</b><i class="bar"></i></button>
+          <button class="step" role="tab" id="st2" aria-selected="false" aria-controls="shot" type="button"><span class="n">3</span><b>Choose the answer</b><i class="bar"></i></button>
+          <p class="step-note" id="step-note" aria-live="polite">Read the question. A key word is a name or a thing, such as "hat" or "Zara".</p>
         </div>
-        <div class="how-r">
+        <div class="shot" id="shot" role="tabpanel">
           <div class="stack">
-            <img class="on" src="assets/shot-question.jpg" alt="The game shows a question and the story: What colour was the hat Zara wore?" width="765" height="450">
-            <img src="assets/shot-search.jpg" alt="The word hat is searched and turns yellow in the story." width="765" height="450">
-            <img src="assets/shot-reason.jpg" alt="After a wrong answer the game gives a short reason." width="765" height="450">
+            <img class="on" src="assets/shot-question.jpg" alt="The game shows a question and the story: What colour was the hat Zara wore?" width="1200" height="584">
+            <img src="assets/shot-search.jpg" alt="The word hat is searched and turns yellow in the story." width="1200" height="584">
+            <img src="assets/shot-reason.jpg" alt="After a wrong answer the game says which kind of mistake it was and gives a short reason." width="1200" height="584">
           </div>
         </div>
       </div>
@@ -264,12 +278,23 @@
   <section class="band note guide" id="guide" aria-labelledby="g-h">
     <div class="wrap">
       <div class="head">
-        <h2 id="g-h" class="reveal">The user guide.</h2>
-        <p class="intro reveal" style="--d:80ms">Step by step, for teachers and for pupils.</p>
+        <h2 id="g-h" class="reveal">Two user guides.</h2>
+        <p class="intro reveal" style="--d:80ms">One for the teacher who runs the lesson, one for the pupils who play.</p>
       </div>
-      <object data="guide/Word-Hunt-User-Guide.pdf" type="application/pdf" aria-label="Word Hunt user guide">
-        <div class="ph"><b>Placeholder</b><p>The user guide will appear here.</p><p><a href="guide/Word-Hunt-User-Guide.pdf">Open the user guide in a new page</a></p></div>
-      </object>
+      <div class="gtabs" role="tablist" aria-label="Choose a guide">
+        <button class="gtab" role="tab" id="gt0" aria-selected="true" aria-controls="gp0" type="button"><b>Teacher guide</b><span>Set up, run and read the results</span></button>
+        <button class="gtab" role="tab" id="gt1" aria-selected="false" aria-controls="gp1" type="button"><b>Student guide</b><span>How to play, step by step</span></button>
+      </div>
+      <div class="gpanel" id="gp0" role="tabpanel" aria-labelledby="gt0" data-pdf="guide/Word-Hunt-Teacher-Guide.pdf">
+        <div class="gbar"><p>Teacher guide</p><div class="gbtns"><a class="btn" href="guide/Word-Hunt-Teacher-Guide.pdf" target="_blank" rel="noopener">Open the guide</a><a class="btn alt" href="guide/Word-Hunt-Teacher-Guide.pdf" download>Download PDF</a></div></div>
+        <object data="guide/Word-Hunt-Teacher-Guide.pdf" type="application/pdf" aria-label="Teacher guide"></object>
+        <div class="ph"><b>Placeholder</b><p>The teacher guide will appear here.</p></div>
+      </div>
+      <div class="gpanel" id="gp1" role="tabpanel" aria-labelledby="gt1" data-pdf="guide/Word-Hunt-Student-Guide.pdf" hidden>
+        <div class="gbar"><p>Student guide</p><div class="gbtns"><a class="btn" href="guide/Word-Hunt-Student-Guide.pdf" target="_blank" rel="noopener">Open the guide</a><a class="btn alt" href="guide/Word-Hunt-Student-Guide.pdf" download>Download PDF</a></div></div>
+        <object data="guide/Word-Hunt-Student-Guide.pdf" type="application/pdf" aria-label="Student guide"></object>
+        <div class="ph"><b>Placeholder</b><p>The student guide will appear here.</p></div>
+      </div>
     </div>
   </section>
 
@@ -307,8 +332,13 @@
     box.className = "form-embed"; box.innerHTML = '<iframe src="' + FORM_URL + '" title="Feedback form">Loading</iframe>';
   }
 
-  // show the guide at full height only when the PDF file is really there
-  if (window.fetch) { fetch("guide/Word-Hunt-User-Guide.pdf", { method: "HEAD" }).then(function (r) { if (r.ok) document.getElementById("guide").classList.add("has-pdf"); }).catch(function () {}); }
+  // guides: two tabs; the PDF viewer appears only when the file is really there
+  var gtabs = document.querySelectorAll(".gtab"), gpanels = document.querySelectorAll(".gpanel");
+  gtabs.forEach(function (t, k) {
+    t.addEventListener("click", function () { gtabs.forEach(function (x, j) { x.setAttribute("aria-selected", j === k); gpanels[j].hidden = j !== k; }); });
+    t.addEventListener("keydown", function (e) { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { var n = (k + 1) % 2; gtabs[n].click(); gtabs[n].focus(); } });
+  });
+  gpanels.forEach(function (p) { if (window.fetch) fetch(p.getAttribute("data-pdf"), { method: "HEAD" }).then(function (r) { if (r.ok) p.classList.add("has-pdf"); }).catch(function () {}); });
 
   // entrances: each part rises in once as it arrives
   var els = document.querySelectorAll(".reveal");
@@ -317,23 +347,27 @@
     els.forEach(function (el) { io.observe(el); });
   } else { els.forEach(function (el) { el.classList.add("in"); }); }
 
-  // how it works
-  var range = document.getElementById("how-range"), clause = document.getElementById("how-clause"), note = document.getElementById("how-p");
-  var imgs = document.querySelectorAll(".how-r img"), names = document.querySelectorAll("#how-names span");
-  var steps = [
-    ["First, pick a key word.", 'A key word is a name or a thing in the question, such as "hat" or "Zara".', "Step 1: pick a key word"],
-    ["Then, search the story.", "Matching words turn yellow. Read the sentences around them.", "Step 2: search the story"],
-    ["Last, choose the answer.", "Pupils get 3 tries. A wrong answer gets a short reason, so the next try is smarter.", "Step 3: choose the answer"]
-  ];
-  function showStep() {
-    var i = +range.value;
-    clause.style.opacity = 0;
-    setTimeout(function () { clause.textContent = steps[i][0]; clause.style.opacity = 1; }, 120);
-    note.textContent = steps[i][1]; range.setAttribute("aria-valuetext", steps[i][2]);
-    imgs.forEach(function (im, k) { im.classList.toggle("on", k === i); });
-    names.forEach(function (n, k) { n.classList.toggle("on", k === i); });
+  // how it works: three buttons, one picture; plays through once, stops when pressed
+  var STEP_TEXT = ['Read the question. A key word is a name or a thing, such as "hat" or "Zara".', "Type the word. Every match turns yellow, so the answer is easy to find.", "Pupils get 3 tries. A wrong answer gets a short reason, so the next try is smarter."];
+  var stepBtns = document.querySelectorAll(".step"), shots = document.querySelectorAll(".shot img"), cur = 0, timer = null;
+  var calm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function go(i, user) {
+    cur = i;
+    stepBtns.forEach(function (b, k) { var on = k === i; b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1; b.classList.remove("auto"); });
+    shots.forEach(function (im, k) { im.classList.toggle("on", k === i); });
+    document.getElementById("step-note").textContent = STEP_TEXT[i];
+    clearTimeout(timer);
+    if (!user && !calm) { void stepBtns[i].offsetWidth; stepBtns[i].classList.add("auto"); timer = setTimeout(function () { go((cur + 1) % 3, false); }, 6000); }
   }
-  range.addEventListener("input", showStep);
+  stepBtns.forEach(function (b, k) {
+    b.addEventListener("click", function () { go(k, true); });
+    b.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowDown" || e.key === "ArrowRight") { e.preventDefault(); go((k + 1) % 3, true); stepBtns[cur].focus(); }
+      if (e.key === "ArrowUp" || e.key === "ArrowLeft") { e.preventDefault(); go((k + 2) % 3, true); stepBtns[cur].focus(); }
+    });
+  });
+  var howEl = document.querySelector(".how");
+  if ("IntersectionObserver" in window && !calm) { var hio = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { go(0, false); hio.disconnect(); } }, { threshold: .4 }); hio.observe(howEl); } else { go(0, true); }
 
   // the headline you can type
   var PASSAGE = "Zara and Hadi went on a boat trip off the coast of Sabah on Saturday. Their uncle, Captain Lee, drove the boat. Zara wore a green hat and Hadi wore a red cap. The boat left the harbour at 8 am. The sea was calm and the sky was bright blue.";
